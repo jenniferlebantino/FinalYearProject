@@ -13,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="1"
-        android:rowCount="3"
-        tools:layout_editor_absoluteX="-20dp"
-        tools:layout_editor_absoluteY="-16dp">
+        android:rowCount="3">
 
         <ImageView
             android:id="@+id/login_logo"
