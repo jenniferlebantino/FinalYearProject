@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FEE1C7"
+    android:background="@color/colorAccent"
     android:padding="24dp"
     tools:context=".ui.login.LoginActivity">
 
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="2"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:gravity="center_horizontal"
                     android:textAlignment="center"
                     android:textSize="24dp"/>
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="1"
-                    android:text="Remember Me" />
+                    android:text="@string/remember" />
 
                 <EditText
                     android:id="@+id/editTextTextPersonName"
@@ -89,33 +89,29 @@
                     android:layout_columnSpan="1"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Forgotten Password?"
+                    android:text="@string/forgotten_password"
                     android:textSize="14dp"/>
 
                 <Button
                     android:id="@+id/login_loginButton"
-                    android:layout_width="156dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_columnSpan="2"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/medium_button"
                     android:enabled="false"
-                    android:text="Login"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/login"
+                    android:radius="10dp"
+                    style="@style/medium_button"/>
 
             </GridLayout>
         </androidx.cardview.widget.CardView>
 
         <Button
+            style="@style/large_button"
             android:id="@+id/login_registerButton"
-            android:layout_width="232dp"
-            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/large_button"
             android:enabled="false"
-            android:text="Register"
-            android:textColor="@android:color/white" />
+            android:text="@string/register"/>
 
     </GridLayout>
 
