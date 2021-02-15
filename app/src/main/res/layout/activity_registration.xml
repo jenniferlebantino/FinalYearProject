@@ -15,11 +15,13 @@
         android:rowCount="3">
 
         <ImageButton
-            android:id="@+id/registration_backButton"
+            android:id="@+id/registration_backBtn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:background="@drawable/medium_button"
+            android:clickable="true"
+            android:hapticFeedbackEnabled="true"
             app:srcCompat="@drawable/abc_vector_test" />
 
         <androidx.cardview.widget.CardView
@@ -121,7 +123,7 @@
                     android:text="Terms &amp; Conditions" />
 
                 <Button
-                    android:id="@+id/registration_submitButton"
+                    android:id="@+id/registration_submitBtn"
                     android:layout_width="156dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
