@@ -28,19 +28,19 @@ private Button submitBtn;
         });
 
         submitBtn = (Button)findViewById(R.id.registration_submitBtn);
-        backToLoginBtn.setOnClickListener(new View.OnClickListener()
+        submitBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                launchHome();
+                launchMain();
             }
         });
     }
 
-    private void launchHome() {
-        Intent launchSplashActivity= new Intent(RegistrationActivity.this, SplashActivity.class);
-        startActivity(launchSplashActivity);
+    private void launchMain() {
+        Intent launchMainActivity= new Intent(RegistrationActivity.this, MainActivity.class);
+        startActivity(launchMainActivity);
     }
 
     private void launchLogin() {

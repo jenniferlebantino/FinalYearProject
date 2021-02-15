@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:background="#FEE1C7"
+    android:padding="24dp"
     tools:context=".RegistrationActivity">
 
     <LinearLayout
@@ -43,10 +43,10 @@
                     android:id="@+id/registration_registrationTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Registration"
                     android:gravity="center_horizontal"
+                    android:text="Registration"
                     android:textAlignment="center"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -100,8 +100,8 @@
                         android:id="@+id/registration_passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:hint="Password" />
+                        android:hint="Password"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -112,8 +112,8 @@
                         android:id="@+id/registration_confirmPasswordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:hint="Confirm Password" />
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <CheckBox
@@ -128,7 +128,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:background="@drawable/medium_button"
-                    android:enabled="false"
+                    android:enabled="true"
+                    android:clickable="true"
                     android:text="Submit"
                     android:textColor="@android:color/white" />
 
