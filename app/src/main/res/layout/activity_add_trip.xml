@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/double_spacing"
+    tools:context=".AddTripActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addTrip_title"
+        android:inputType="text"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addTrip_description"
+        android:inputType="text"
+        />
+
+    <Button
+        android:id="@+id/addTrip_closeBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/medium_button"
+        android:drawableLeft="@drawable/ic_close"
+        android:text="Cancel"
+        android:padding="@dimen/single_spacing"
+        android:layout_toLeftOf="@id/addTrip_saveBtn"/>
+
+    <Button
+        android:id="@+id/addTrip_saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/medium_button"
+        android:text="Save"
+        android:padding="@dimen/single_spacing"
+        android:drawableLeft="@drawable/ic_save"
+        />
+</LinearLayout>

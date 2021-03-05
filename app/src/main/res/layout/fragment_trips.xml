@@ -11,4 +11,14 @@
         tools:listitem="@layout/trip_item"
         android:layout_centerInParent="true" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:layout_alignBottom="@+id/trips_recycler_view"
+        android:layout_alignRight="@id/trips_recycler_view"
+        android:layout_margin="@dimen/single_spacing"
+        android:id="@+id/trips_addBtn"
+        />
+
 </RelativeLayout>
