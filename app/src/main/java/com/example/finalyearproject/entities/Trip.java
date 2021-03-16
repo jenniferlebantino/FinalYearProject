@@ -3,11 +3,9 @@ package com.example.finalyearproject.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 @Entity (tableName = "trips_table")
 public class Trip {
+
     @PrimaryKey(autoGenerate = true)
     private int tripId;
 
@@ -15,18 +13,22 @@ public class Trip {
 //    private int userId;
     private String title;
     private String description;
+    private String startDate;
+//    private String endDate;
+
     //TODO: Create location class.
 //    private String location;
-//    private Date startDate;
-//    private Date endDate;
 //    public ArrayList<ItineraryItem> itinerary;
+//    private String imageUrl;
 
-    public Trip(String title, String description) {
+    public Trip(String title, String description, String startDate) {
         this.title = title;
         this.description = description;
-//        this.location = location;
-//        this.startDate = startDate;
+        this.startDate = startDate;
 //        this.endDate = endDate;
+
+//        this.imageUrl = imageUrl;
+//        this.location = location;
 //        itinerary = new ArrayList<ItineraryItem>();
     }
 
@@ -49,6 +51,15 @@ public class Trip {
     public String getDescription() {
         return description;
     }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
 
     public void setDescription(String description) {
         this.description = description;

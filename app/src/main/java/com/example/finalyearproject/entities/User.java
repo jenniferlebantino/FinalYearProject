@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.sql.Date;
+import java.time.OffsetDateTime;
 
 
 @Entity(tableName = "users_table")
@@ -20,7 +21,7 @@ public class User {
     private String lastName;
     private String emailAddress;
 //    private boolean verified;
-//    private Date dateJoined;
+    //private OffsetDateTime dateJoined;
 //    private Date dateVerified;
 
     private static final boolean DEFAULT_VERIFIED_STATUS = false;

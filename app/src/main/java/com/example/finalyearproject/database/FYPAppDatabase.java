@@ -9,14 +9,16 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.finalyearproject.dao.ContactDao;
 import com.example.finalyearproject.dao.TripDao;
 import com.example.finalyearproject.dao.UserDao;
+import com.example.finalyearproject.entities.Contact;
 import com.example.finalyearproject.entities.Trip;
 import com.example.finalyearproject.entities.User;
 
 import java.util.Date;
 
-@Database(entities = {User.class, Trip.class}, version = 3, exportSchema = false)
+@Database(entities = {User.class, Trip.class, Contact.class}, version = 2, exportSchema = false)
 public abstract class FYPAppDatabase extends RoomDatabase {
 
     //Singleton pattern
@@ -24,6 +26,7 @@ public abstract class FYPAppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
     public abstract TripDao tripDao();
+    public abstract ContactDao contactDao();
 
     //synchronised ensures that only one instance of this can be accessed even with multiple threads ongoing.
     public static synchronized FYPAppDatabase getInstance(Context context) {
@@ -47,10 +50,12 @@ public abstract class FYPAppDatabase extends RoomDatabase {
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>{
         private UserDao userDao;
         private TripDao tripDao;
+        private ContactDao contactDao;
 
         private PopulateDbAsyncTask(FYPAppDatabase db) {
             userDao = db.userDao();
             tripDao = db.tripDao();
+            contactDao = db.contactDao();
         }
 
         @Override
@@ -58,8 +63,11 @@ public abstract class FYPAppDatabase extends RoomDatabase {
             userDao.insert(new User("Jennifer", "Lebantino", "test@example.com"));
             userDao.insert(new User("Jennifer2", "Lebantino2", "test2@example.com"));
 
-            tripDao.insert(new Trip("Safari Adventure", "Safari with Rhea and Josh."));
-            tripDao.insert(new Trip("Cottage Getaway", "Quiet retreat in Cornwall."));
+            tripDao.insert(new Trip("Safari Adventure", "Safari with Rhea and Josh.", "March 15, 2021"));
+            tripDao.insert(new Trip("Cottage Getaway", "Quiet retreat in Cornwall.", "March 15, 2021"));
+
+            contactDao.insert(new Contact("Friend", "Friend", "friend@example.com", "07777777777"));
+            contactDao.insert(new Contact("Friend2", "Friend2", "friend2@example.com", "07777777778"));
             return null;
         }
     }

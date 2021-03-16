@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(launchSettings);
                 break;
             case R.id.nav_logout:
-                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
                 break;
         }
 

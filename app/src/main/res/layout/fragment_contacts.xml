@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent"
+    >
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/contacts_recycler_view"
+        tools:listitem="@layout/contact_item"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contacts"
-        android:layout_centerInParent="true"/>
+        android:src="@drawable/ic_add"
+        android:layout_alignBottom="@+id/contacts_recycler_view"
+        android:layout_alignRight="@id/contacts_recycler_view"
+        android:layout_margin="@dimen/single_spacing"
+        android:id="@+id/contacts_addBtn"
+        android:layout_alignEnd="@id/contacts_recycler_view" />
+
 </RelativeLayout>

@@ -29,7 +29,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class TripsFragment extends Fragment {
     public static final int ADD_TRIP_REQUEST = 1;
-
     private TripViewModel tripViewModel;
     private FloatingActionButton addTripBtn;
 
@@ -76,11 +75,13 @@ public class TripsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(requestCode == ADD_TRIP_REQUEST && resultCode == RESULT_OK) {
             String title = data.getStringExtra(AddTripActivity.EXTRA_TITLE);
             String description = data.getStringExtra(AddTripActivity.EXTRA_DESCRIPTION);
+            String startDate = data.getStringExtra(AddTripActivity.EXTRA_STARTDATE);
 
-            Trip trip = new Trip(title, description);
+            Trip trip = new Trip(title, description, startDate);
             tripViewModel.insert(trip);
             Toast.makeText(getActivity(), "Trip Saved", Toast.LENGTH_SHORT).show();
         }
