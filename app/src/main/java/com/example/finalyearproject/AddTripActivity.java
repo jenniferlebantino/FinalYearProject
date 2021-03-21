@@ -39,6 +39,8 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     public static final String EXTRA_TITLE = "com.example.finalyearproject.EXTRA_TITLE";
     public static final String EXTRA_DESCRIPTION = "com.example.finalyearproject.EXTRA_DESCRIPTION";
     public static final String EXTRA_STARTDATE = "com.example.finalyearproject.EXTRA_STARTDATE";
+    public static final String EXTRA_ENDDATE = "com.example.finalyearproject.EXTRA_ENDDATE";
+    public static final String EXTRA_IMAGEURL = "com.example.finalyearproject.EXTRA_IMAGEURL";
     public static final int PICK_IMAGE_REQUEST = 1;
 
     private EditText titleTxtBox;
@@ -48,6 +50,9 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     private Button chooseImageBtn;
     private Button startDateBtn;
     private TextView startDateTxtView;
+    private Button endDateBtn;
+    private boolean startDateBtnClicked;
+    private TextView endDateTxtView;
     private ImageView tripImageView;
     private ProgressBar progressBar;
 
@@ -62,7 +67,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         setContentView(R.layout.activity_add_trip);
 
         setTitle("Add Trip");
-
         progressBar = findViewById(R.id.addTrip_progressBar);
         tripImageView = findViewById(R.id.addTrip_tripImage);
         chooseImageBtn = findViewById(R.id.addTrip_chooseImageBtn);
@@ -86,9 +90,20 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "date picker");
+                startDateBtnClicked = true;
             }
         });
         startDateTxtView = findViewById(R.id.addTrip_startDateTxt);
+
+        endDateBtn = findViewById(R.id.addTrip_endDateBtn);
+        endDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            }
+        });
+        endDateTxtView = findViewById(R.id.addTrip_endDateTxt);
 
         saveBtn = (Button)findViewById(R.id.addTrip_saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener()
@@ -142,6 +157,8 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         String title = titleTxtBox.getText().toString();
         String description = descriptionTxtBox.getText().toString();
         String startDate = startDateTxtView.getText().toString();
+        String endDate = endDateTxtView.getText().toString();
+        String imageUrl = imageUri == null ? "": imageUri.toString();
 
         if (imageUri != null)
         {
@@ -190,9 +207,10 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             });
         }
 
-        if(startDate == "Start Date")
+
+        if(startDate.equals("Start Date") || endDate.equals("End Date"))
         {
-            Toast.makeText(AddTripActivity.this, "Please select a start date.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddTripActivity.this, "Please select a start date and end date.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -206,6 +224,8 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         tripData.putExtra(EXTRA_TITLE, title);
         tripData.putExtra(EXTRA_DESCRIPTION, description);
         tripData.putExtra(EXTRA_STARTDATE, startDate);
+        tripData.putExtra(EXTRA_ENDDATE, endDate);
+        tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
 
         setResult(RESULT_OK, tripData);
         finish();
@@ -222,7 +242,15 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.DEFAULT).format(calendar.getTime());
-        startDateTxtView .setText(currentDateString);
+        String selectedDate = DateFormat.getDateInstance(DateFormat.DEFAULT).format(calendar.getTime());
+        if(startDateBtnClicked)
+        {
+            startDateTxtView.setText(selectedDate);
+            startDateBtnClicked = false;
+        }
+        else
+        {
+            endDateTxtView.setText(selectedDate);
+        }
     }
 }

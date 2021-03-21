@@ -14,13 +14,15 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/trips_tripImage" />
+            android:id="@+id/trips_tripImage"
+            android:src="@mipmap/im_no_image"
+            android:paddingRight="@dimen/single_spacing"/>
 
         <TextView
             android:id="@+id/trip_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test Title"
+            android:text="Trip Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:layout_toEndOf="@+id/trips_tripImage"
             android:layout_toRightOf="@+id/trips_tripImage" />
@@ -32,7 +34,7 @@
             android:layout_below="@id/trip_title"
             android:layout_toEndOf="@+id/trips_tripImage"
             android:layout_toRightOf="@+id/trips_tripImage"
-        android:text="Description"/>
+            android:text="Description"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

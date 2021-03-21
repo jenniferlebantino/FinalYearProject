@@ -80,8 +80,10 @@ public class TripsFragment extends Fragment {
             String title = data.getStringExtra(AddTripActivity.EXTRA_TITLE);
             String description = data.getStringExtra(AddTripActivity.EXTRA_DESCRIPTION);
             String startDate = data.getStringExtra(AddTripActivity.EXTRA_STARTDATE);
+            String endDate = data.getStringExtra(AddTripActivity.EXTRA_ENDDATE);
+            String imageUrl = data.getStringExtra(AddTripActivity.EXTRA_IMAGEURL);
 
-            Trip trip = new Trip(title, description, startDate);
+            Trip trip = new Trip(title, description, startDate, endDate, imageUrl);
             tripViewModel.insert(trip);
             Toast.makeText(getActivity(), "Trip Saved", Toast.LENGTH_SHORT).show();
         }

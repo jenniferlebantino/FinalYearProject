@@ -63,6 +63,22 @@
         android:text="Start Date"
         />
 
+    <Button
+        android:id="@+id/addTrip_endDateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Date"
+        android:layout_marginBottom="@dimen/double_spacing"
+        />
+
+    <TextView
+        android:id="@+id/addTrip_endDateTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/double_spacing"
+        android:text="End Date"
+        />
+
 
     <Button
         android:id="@+id/addTrip_saveBtn"

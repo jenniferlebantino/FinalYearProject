@@ -63,8 +63,8 @@ public abstract class FYPAppDatabase extends RoomDatabase {
             userDao.insert(new User("Jennifer", "Lebantino", "test@example.com"));
             userDao.insert(new User("Jennifer2", "Lebantino2", "test2@example.com"));
 
-            tripDao.insert(new Trip("Safari Adventure", "Safari with Rhea and Josh.", "March 15, 2021"));
-            tripDao.insert(new Trip("Cottage Getaway", "Quiet retreat in Cornwall.", "March 15, 2021"));
+            tripDao.insert(new Trip("Safari Adventure", "Safari with Rhea and Josh.", "March 15, 2021", "March 21, 2021", ""));
+            tripDao.insert(new Trip("Cottage Getaway", "Quiet retreat in Cornwall.", "March 15, 2021", "March 21, 2021", ""));
 
             contactDao.insert(new Contact("Friend", "Friend", "friend@example.com", "07777777777"));
             contactDao.insert(new Contact("Friend2", "Friend2", "friend2@example.com", "07777777778"));

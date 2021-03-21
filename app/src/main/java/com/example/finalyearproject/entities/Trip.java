@@ -14,20 +14,19 @@ public class Trip {
     private String title;
     private String description;
     private String startDate;
-//    private String endDate;
+    private String endDate;
+    private String imageUrl;
 
     //TODO: Create location class.
 //    private String location;
 //    public ArrayList<ItineraryItem> itinerary;
-//    private String imageUrl;
 
-    public Trip(String title, String description, String startDate) {
+    public Trip(String title, String description, String startDate, String endDate, String imageUrl) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
-//        this.endDate = endDate;
-
-//        this.imageUrl = imageUrl;
+        this.endDate = endDate;
+        this.imageUrl = imageUrl;
 //        this.location = location;
 //        itinerary = new ArrayList<ItineraryItem>();
     }
@@ -52,6 +51,10 @@ public class Trip {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getStartDate() {
         return startDate;
     }
@@ -60,9 +63,20 @@ public class Trip {
         this.startDate = startDate;
     }
 
+    public String getEndDate() {
+        return endDate;
+    }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }
