@@ -29,13 +29,14 @@ import static android.app.Activity.RESULT_OK;
 public class ContactsFragment extends Fragment {
     public static final int ADD_CONTACT_REQUEST = 1;
     private ContactViewModel contactViewModel;
+    private FloatingActionButton addContactBtn;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
 
-        FloatingActionButton addContactBtn = v.findViewById(R.id.contacts_addBtn);
+        addContactBtn = v.findViewById(R.id.contacts_addBtn);
         addContactBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override

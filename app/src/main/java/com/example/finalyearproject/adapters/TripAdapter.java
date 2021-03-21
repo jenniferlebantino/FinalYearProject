@@ -44,7 +44,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
             holder.imageView.setImageResource(R.drawable.im_no_image);
             return;
         }
-        Picasso.get().load(imageUrl).into(holder.imageView);
     }
 
     @Override

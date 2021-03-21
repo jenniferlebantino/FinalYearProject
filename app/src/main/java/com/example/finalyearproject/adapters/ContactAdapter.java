@@ -3,6 +3,7 @@ package com.example.finalyearproject.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalyearproject.R;
 import com.example.finalyearproject.entities.Contact;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
     public void onBindViewHolder(@NonNull ContactHolder holder, int position) {
         Contact contact = contacts.get(position);
         holder.name.setText(contact.getFirstName().concat(contact.getLastName()));
+        String imageUrl = contact.getContactImageUrl();
+        if(imageUrl.equals(""))
+        {
+            holder.contactImageView.setImageResource(R.drawable.im_no_image);
+            return;
+        }
+        Picasso.get().load(imageUrl).into(holder.contactImageView);
     }
 
     @Override
@@ -44,11 +53,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
 
     class ContactHolder extends RecyclerView.ViewHolder {
         private TextView name;
+        private ImageView contactImageView;
 
         public ContactHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contacts_name);
-            //TODO: Image.
+            contactImageView = itemView.findViewById(R.id.contacts_contactImage);
         }
     }
 
