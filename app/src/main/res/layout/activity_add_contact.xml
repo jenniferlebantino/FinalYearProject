@@ -9,6 +9,22 @@
     android:padding="@dimen/double_spacing"
     tools:context=".AddContactActivity">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/addContact_contactImage"
+        android:layout_marginBottom="@dimen/double_spacing"
+        android:src="@drawable/im_no_image"
+        />
+
+    <Button
+        android:id="@+id/addContact_chooseImageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Image"
+        android:layout_marginBottom="@dimen/double_spacing"
+        />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -17,12 +17,15 @@ public class Contact {
 
     private String phoneNumber;
 
-    public Contact(String firstName, String lastName, String emailAddress, String phoneNumber)
+    private String contactImageUrl;
+
+    public Contact(String firstName, String lastName, String emailAddress, String phoneNumber, String contactImageUrl)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+        this.contactImageUrl = contactImageUrl;
     }
 
     public void setContactId(int contactId) {
@@ -47,5 +50,13 @@ public class Contact {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getContactImageUrl() {
+        return contactImageUrl;
+    }
+
+    public void setContactImageUrl(String contactImageUrl) {
+        this.contactImageUrl = contactImageUrl;
     }
 }

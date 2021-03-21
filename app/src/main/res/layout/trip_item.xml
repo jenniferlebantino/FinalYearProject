@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/single_spacing">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/trips_tripImage"
-            android:src="@mipmap/im_no_image"
+            android:src="@drawable/im_no_image"
             android:paddingRight="@dimen/single_spacing"/>
 
         <TextView

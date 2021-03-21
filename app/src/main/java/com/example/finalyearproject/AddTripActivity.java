@@ -207,7 +207,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             });
         }
 
-
         if(startDate.equals("Start Date") || endDate.equals("End Date"))
         {
             Toast.makeText(AddTripActivity.this, "Please select a start date and end date.", Toast.LENGTH_SHORT).show();

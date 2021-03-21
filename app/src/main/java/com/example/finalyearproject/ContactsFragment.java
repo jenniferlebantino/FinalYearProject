@@ -79,8 +79,9 @@ public class ContactsFragment extends Fragment {
             String lastName = data.getStringExtra(AddContactActivity.EXTRA_LASTNAME);
             String emailAddress = data.getStringExtra(AddContactActivity.EXTRA_EMAILADDRESS);
             String phoneNumber = data.getStringExtra(AddContactActivity.EXTRA_PHONENUMBER);
+            String contactImageUrl = data.getStringExtra(AddContactActivity.EXTRA_IMAGEURL);
 
-            Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber);
+            Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber, contactImageUrl);
             contactViewModel.insert(contact);
             Toast.makeText(getActivity(), "Contact Saved", Toast.LENGTH_SHORT).show();
         }
