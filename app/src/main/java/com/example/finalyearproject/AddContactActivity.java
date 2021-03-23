@@ -5,13 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -50,7 +47,6 @@ public class AddContactActivity extends AppCompatActivity {
     private Uri imageUri;
     private StorageReference storageReference;
     private DatabaseReference dbReference;
-    private GMailSender sender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,54 +183,11 @@ public class AddContactActivity extends AppCompatActivity {
 
         setResult(RESULT_OK, contactData);
         finish();
-        sendVerificationEmail();
-    }
-
-    private void sendVerificationEmail() {
-//        String testEmail = "lebantij@aston.ac.uk";
-//
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"+ testEmail));
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "Hello");
-//        intent.putExtra(Intent.EXTRA_TEXT, "Please, please work.");
-//        startActivity(intent);
-        sender = new GMailSender("jenfypemail@gmail.com", "FinalYearProject21!");
-        new MailAsyncTask().execute();
+        new MailAsyncTask(AddContactActivity.this, EmailTypeEnum.ContactVerification, emailAddress, firstName).execute();
     }
 
     private void launchContacts() {
         Intent launchTripsFragment= new Intent(AddContactActivity.this, ContactsFragment.class);
         startActivity(launchTripsFragment);
     }
-
-    class MailAsyncTask extends AsyncTask<Void, Void, Void> {
-        //ProgressDialog dialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //dialog = new ProgressDialog(AddContactActivity.this);
-            //dialog.setMessage("Please wait...");
-            //dialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                sender.sendMail("Hello", "Please work...", "jenfypemail@gmail.com", "jenniferlebantino@gmail.com");
-                Log.d("send", "done");
-            }
-            catch(Exception e) {
-                Log.d("exceptionsending", e.toString());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //dialog.cancel();
-            Toast.makeText(AddContactActivity.this, "Verification Sent", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }
