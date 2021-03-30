@@ -14,19 +14,10 @@
         android:orientation="vertical"
         android:rowCount="3">
 
-        <ImageButton
-            android:id="@+id/registration_backBtn"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/medium_button"
-            android:clickable="true"
-            android:hapticFeedbackEnabled="true"
-            app:srcCompat="@drawable/abc_vector_test" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="fill"
             android:layout_marginBottom="32dp"
             app:cardCornerRadius="10dp"

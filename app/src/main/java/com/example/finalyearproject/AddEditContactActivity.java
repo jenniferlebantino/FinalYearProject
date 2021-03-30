@@ -2,6 +2,7 @@ package com.example.finalyearproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -27,7 +28,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class AddContactActivity extends AppCompatActivity {
+public class AddEditContactActivity extends AppCompatActivity {
+    public static final String EXTRA_CONTACTID = "com.example.finalyearproject.EXTRA_CONTACTID";
     public static final String EXTRA_FIRSTNAME = "com.example.finalyearproject.EXTRA_FIRSTNAME";
     public static final String EXTRA_LASTNAME = "com.example.finalyearproject.EXTRA_LASTNAME";
     public static final String EXTRA_EMAILADDRESS = "com.example.finalyearproject.EXTRA_EMAILADDRESS";
@@ -39,10 +41,9 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText lastNameTxtBox;
     private EditText emailAddressTxtBox;
     private EditText phoneNumberTxtBox;
-    private ImageView addContactImage;
+    private ImageView contactImageView;
     private Button chooseImageBtn;
     private Button saveBtn;
-    private Button closeBtn;
 
     private Uri imageUri;
     private StorageReference storageReference;
@@ -52,8 +53,7 @@ public class AddContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-
-        setTitle("Add Contact");
+        getSupportActionBar().setIcon(R.drawable.ic_close);
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
         dbReference = FirebaseDatabase.getInstance().getReference("uploads");
@@ -62,8 +62,21 @@ public class AddContactActivity extends AppCompatActivity {
         lastNameTxtBox = findViewById(R.id.addContact_lastName);
         emailAddressTxtBox = findViewById(R.id.addContact_emailAddress);
         phoneNumberTxtBox = findViewById(R.id.addContact_phoneNumber);
-        addContactImage = findViewById(R.id.addContact_contactImage);
+        contactImageView = findViewById(R.id.addContact_contactImage);
         chooseImageBtn = findViewById(R.id.addContact_chooseImageBtn);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_CONTACTID)) {
+            setTitle("Edit Contact");
+
+            firstNameTxtBox.setText(intent.getStringExtra(EXTRA_FIRSTNAME));
+            lastNameTxtBox.setText(intent.getStringExtra(EXTRA_LASTNAME));
+            emailAddressTxtBox.setText(intent.getStringExtra(EXTRA_EMAILADDRESS));
+            phoneNumberTxtBox.setText(intent.getStringExtra(EXTRA_PHONENUMBER));
+            loadImage(EXTRA_IMAGEURL);
+        } else {
+            setTitle("Add Contact");
+        }
 
         chooseImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,25 +85,14 @@ public class AddContactActivity extends AppCompatActivity {
             }
         });
 
-        saveBtn = (Button)findViewById(R.id.addTrip_saveBtn);
-        saveBtn.setOnClickListener(new View.OnClickListener()
-        {
+        saveBtn = (Button) findViewById(R.id.addTrip_saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 SaveContact();
             }
         });
 
-        closeBtn = (Button)findViewById(R.id.addTrip_closeBtn);
-        closeBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                launchContacts();
-            }
-        });
     }
 
     private void OpenImageFileSelector() {
@@ -100,24 +102,28 @@ public class AddContactActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    private void loadImage(String imageUrl) {
+        if (imageUrl.equals("") || imageUrl == null) {
+            contactImageView.setImageResource(R.drawable.im_no_image);
+        } else {
+            Picasso.get().load(imageUrl).into(contactImageView);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null)
-        {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             imageUri = data.getData();
-            Picasso.get().load(imageUri).into(addContactImage);
+            Picasso.get().load(imageUri).into(contactImageView);
         }
     }
 
-    private String getFileExtension(Uri uri)
-    {
+    private String getFileExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
-
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
@@ -125,51 +131,40 @@ public class AddContactActivity extends AppCompatActivity {
         String firstName = firstNameTxtBox.getText().toString();
         String lastName = lastNameTxtBox.getText().toString();
         String emailAddress = lastNameTxtBox.getText().toString();
-        String phoneNumber = phoneNumberTxtBox.getText().toString();
-        String imageUrl = imageUri == null ? "": imageUri.toString();
+        String phoneNumber = phoneNumberTxtBox.getText().toString() == null ? "" : phoneNumberTxtBox.getText().toString();
+        String imageUrl = imageUri == null ? "" : imageUri.toString();
 
-        if (imageUri != null)
-        {
+        if (imageUri != null) {
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageUri));
 
-            fileReference.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
-            {
+            fileReference.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
-                {
-                    if (!task.isSuccessful())
-                    {
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
                         throw task.getException();
                     }
                     return storageReference.getDownloadUrl();
                 }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>()
-            {
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @SuppressLint("LongLogTag")
                 @Override
-                public void onComplete(@NonNull Task<Uri> task)
-                {
-                    if (task.isSuccessful())
-                    {
-
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
                         Upload upload = new Upload("", downloadUri.toString());
 
                         Log.e("AddContactActivity_Saving", "then: " + downloadUri.toString());
                         dbReference.push().setValue(upload);
-                        Toast.makeText(AddContactActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(AddContactActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEditContactActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddEditContactActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
 
-        if(firstName.trim().isEmpty() || lastName.trim().isEmpty() || emailAddress.trim().isEmpty() || phoneNumber.trim().isEmpty())
-        {
+        if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || emailAddress.trim().isEmpty() || phoneNumber.trim().isEmpty()) {
             Toast.makeText(this, "Please add a title and description", Toast.LENGTH_LONG).show();
             return;
         }
@@ -178,16 +173,21 @@ public class AddContactActivity extends AppCompatActivity {
         contactData.putExtra(EXTRA_FIRSTNAME, firstName);
         contactData.putExtra(EXTRA_LASTNAME, lastName);
         contactData.putExtra(EXTRA_EMAILADDRESS, emailAddress);
-        contactData.putExtra(EXTRA_EMAILADDRESS, phoneNumber);
+        contactData.putExtra(EXTRA_PHONENUMBER, phoneNumber);
         contactData.putExtra(EXTRA_IMAGEURL, imageUrl);
+
+        int id = getIntent().getIntExtra(EXTRA_CONTACTID, -1);
+        if (id != -1) {
+            contactData.putExtra(EXTRA_CONTACTID, id);
+        }
+        new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, emailAddress, firstName).execute();
 
         setResult(RESULT_OK, contactData);
         finish();
-        new MailAsyncTask(AddContactActivity.this, EmailTypeEnum.ContactVerification, emailAddress, firstName).execute();
     }
 
     private void launchContacts() {
-        Intent launchTripsFragment= new Intent(AddContactActivity.this, ContactsFragment.class);
+        Intent launchTripsFragment = new Intent(AddEditContactActivity.this, ContactsFragment.class);
         startActivity(launchTripsFragment);
     }
 }

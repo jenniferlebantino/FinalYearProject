@@ -6,9 +6,12 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.example.finalyearproject.entities.Trip;
+import com.example.finalyearproject.entities.TripContacts;
 
 import java.util.List;
 
@@ -26,5 +29,8 @@ public interface TripDao {
 
     @Query("SELECT * FROM trips_table ORDER BY title DESC")
     LiveData<List<Trip>> getAllTrips();
+
+    @RawQuery(observedEntities = Trip.class)
+    Trip getTripById(SupportSQLiteQuery query);
 
 }

@@ -15,10 +15,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
+        android:backgroundTint="@color/colorPrimary"
         android:layout_alignBottom="@+id/trips_recycler_view"
         android:layout_alignRight="@id/trips_recycler_view"
         android:layout_margin="@dimen/single_spacing"
         android:id="@+id/trips_addBtn"
-        />
+        android:layout_alignEnd="@id/trips_recycler_view" />
 
 </RelativeLayout>

@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent"
-    >
+    android:background="@color/colorAccent" >
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -19,6 +18,7 @@
         android:layout_alignBottom="@+id/contacts_recycler_view"
         android:layout_alignRight="@id/contacts_recycler_view"
         android:layout_margin="@dimen/single_spacing"
+        android:backgroundTint="@color/colorPrimary"
         android:id="@+id/contacts_addBtn"
         android:layout_alignEnd="@id/contacts_recycler_view" />
 

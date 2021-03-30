@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.example.finalyearproject.dao.ContactDao;
 import com.example.finalyearproject.database.FYPAppDatabase;
 import com.example.finalyearproject.entities.Contact;
+import com.example.finalyearproject.entities.TripContacts;
 
 import java.util.List;
 
@@ -36,6 +38,12 @@ public class ContactRepository {
 
     public LiveData<List<Contact>> getAllContacts() {
         return allContacts;
+    }
+
+    public Contact getContactByContactId(int contactId) {
+        String queryString = "SELECT * FROM tripContacts_table WHERE tripId LIKE '" + Integer.toString(contactId) + "'";
+        SimpleSQLiteQuery query = new SimpleSQLiteQuery(queryString);
+        return contactDao.getContactByContactId(query);
     }
 
     private static class InsertContactAsyncTask extends AsyncTask<Contact, Void, Void> {

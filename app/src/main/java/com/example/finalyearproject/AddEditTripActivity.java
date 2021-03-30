@@ -10,15 +10,14 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,8 @@ import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class AddTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class AddEditTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    public static final String EXTRA_TRIPID = "com.example.finalyearproject.EXTRA_TRIPID";
     public static final String EXTRA_TITLE = "com.example.finalyearproject.EXTRA_TITLE";
     public static final String EXTRA_DESCRIPTION = "com.example.finalyearproject.EXTRA_DESCRIPTION";
     public static final String EXTRA_STARTDATE = "com.example.finalyearproject.EXTRA_STARTDATE";
@@ -51,10 +51,11 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     private Button startDateBtn;
     private TextView startDateTxtView;
     private Button endDateBtn;
+    private Button selectContactBtn;
     private boolean startDateBtnClicked;
     private TextView endDateTxtView;
     private ImageView tripImageView;
-    private ProgressBar progressBar;
+    private FrameLayout fragmentContainer;
 
     private Uri imageUri;
 
@@ -66,13 +67,9 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
 
-        setTitle("Add Trip");
-        progressBar = findViewById(R.id.addTrip_progressBar);
-        tripImageView = findViewById(R.id.addTrip_tripImage);
-        chooseImageBtn = findViewById(R.id.addTrip_chooseImageBtn);
-
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        dbReference = FirebaseDatabase.getInstance().getReference("uploads");
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        setTitle("New Trip");
+        initialise();
 
         chooseImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +78,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             }
         });
 
-        titleTxtBox = findViewById(R.id.addTrip_title);
-        descriptionTxtBox = findViewById(R.id.addTrip_description);
-
-        startDateBtn = findViewById(R.id.addTrip_startDateBtn);
         startDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +86,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
                 startDateBtnClicked = true;
             }
         });
-        startDateTxtView = findViewById(R.id.addTrip_startDateTxt);
 
-        endDateBtn = findViewById(R.id.addTrip_endDateBtn);
         endDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,9 +94,14 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
                 datePicker.show(getSupportFragmentManager(), "date picker");
             }
         });
-        endDateTxtView = findViewById(R.id.addTrip_endDateTxt);
 
-        saveBtn = (Button)findViewById(R.id.addTrip_saveBtn);
+        selectContactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment();
+            }
+        });
+
         saveBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -115,7 +111,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
             }
         });
 
-        closeBtn = (Button)findViewById(R.id.addTrip_closeBtn);
         closeBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -124,6 +119,57 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
                 launchTrips();
             }
         });
+
+        Intent intent = getIntent();
+        if(intent.hasExtra(EXTRA_TRIPID)) {
+            setTitle("Edit Contact");
+
+            titleTxtBox.setText(intent.getStringExtra(EXTRA_TITLE));
+            descriptionTxtBox.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
+            startDateTxtView.setText(intent.getStringExtra(EXTRA_STARTDATE));
+            endDateTxtView.setText(intent.getStringExtra(EXTRA_ENDDATE));
+            loadImage(EXTRA_IMAGEURL);
+        }
+        else {
+            setTitle("Add Contact");
+        }
+    }
+
+    private void loadImage(String imageUrl) {
+        if(imageUrl.equals("") || imageUrl == null) {
+            tripImageView.setImageResource(R.drawable.im_no_image);
+        }
+        else {
+            Picasso.get().load(imageUrl).into(tripImageView);
+        }
+    }
+
+    private void openFragment() {
+        Intent intent = new Intent(AddEditTripActivity.this, SelectContactsActivity.class);
+        startActivity(intent);
+    }
+
+    private void initialise() {
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        dbReference = FirebaseDatabase.getInstance().getReference("uploads");
+
+        tripImageView = findViewById(R.id.addTrip_tripImage);
+        chooseImageBtn = findViewById(R.id.addTrip_chooseImageBtn);
+
+        titleTxtBox = findViewById(R.id.addTrip_title);
+        descriptionTxtBox = findViewById(R.id.addTrip_description);
+
+        startDateBtn = findViewById(R.id.addTrip_startDateBtn);
+        startDateTxtView = findViewById(R.id.addTrip_startDateTxt);
+
+        endDateBtn = findViewById(R.id.addTrip_endDateBtn);
+        endDateTxtView = findViewById(R.id.addTrip_endDateTxt);
+
+        selectContactBtn = findViewById(R.id.addTrip_addContact);
+        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+
+        saveBtn = (Button)findViewById(R.id.addTrip_saveBtn);
+        closeBtn = (Button)findViewById(R.id.addTrip_closeBtn);
     }
 
     private void OpenImageFileSelector() {
@@ -137,8 +183,7 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null)
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
         {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(tripImageView);
@@ -149,7 +194,6 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
     {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
-
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
@@ -183,25 +227,16 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
                 {
                     if (task.isSuccessful())
                     {
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable()
-                            {
-                                @Override
-                                public void run() {
-                                    progressBar.setProgress(0);
-                                }
-                            }, 500);
-
                         Uri downloadUri = task.getResult();
                         Upload upload = new Upload(titleTxtBox.getText().toString().trim(), downloadUri.toString());
 
                         Log.e("AddTripActivity_Saving", "then: " + downloadUri.toString());
                         dbReference.push().setValue(upload);
-                        Toast.makeText(AddTripActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEditTripActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        Toast.makeText(AddTripActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEditTripActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -209,13 +244,13 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
 
         if(startDate.equals("Start Date") || endDate.equals("End Date"))
         {
-            Toast.makeText(AddTripActivity.this, "Please select a start date and end date.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddEditTripActivity.this, "Please select a start date and end date.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(title.trim().isEmpty() || description.trim().isEmpty())
         {
-            Toast.makeText(AddTripActivity.this, "Please add a title and description", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddEditTripActivity.this, "Please add a title and description", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -226,12 +261,17 @@ public class AddTripActivity extends AppCompatActivity implements DatePickerDial
         tripData.putExtra(EXTRA_ENDDATE, endDate);
         tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
 
+        int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
+        if (id != -1) {
+            tripData.putExtra(EXTRA_TRIPID, id);
+        }
+
         setResult(RESULT_OK, tripData);
         finish();
     }
 
     private void launchTrips() {
-        Intent launchTripsFragment= new Intent(AddTripActivity.this, TripsFragment.class);
+        Intent launchTripsFragment= new Intent(this, TripsFragment.class);
         startActivity(launchTripsFragment);
     }
 

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.example.finalyearproject.dao.TripDao;
 import com.example.finalyearproject.database.FYPAppDatabase;
@@ -37,6 +38,13 @@ public class TripRepository {
 
     public LiveData<List<Trip>> getAllTrips() {
         return allTrips;
+    }
+
+    public Trip getTripById(int tripId) {
+        String queryString = "SELECT * FROM trip_table WHERE tripId LIKE '" + Integer.toString(tripId) + "'";
+        SimpleSQLiteQuery query = new SimpleSQLiteQuery(queryString);
+
+        return tripDao.getTripById(query);
     }
 
     //Async tasks

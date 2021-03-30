@@ -42,4 +42,8 @@ public class TripViewModel extends AndroidViewModel {
         return allTrips;
     }
 
+    public Trip getTripById(int tripID) {
+        return tripRepository.getTripById(tripID);
+    }
+
 }

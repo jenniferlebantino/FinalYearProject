@@ -24,7 +24,7 @@
             android:layout_column="0"
             android:layout_gravity="center"
             android:layout_margin="64dp"
-            app:srcCompat="@drawable/ce356938fc65c1f040dbcfec38dc7cc5" />
+            app:srcCompat="@drawable/im_logo" />
 
         <Button
             android:id="@+id/splash_startBtn"

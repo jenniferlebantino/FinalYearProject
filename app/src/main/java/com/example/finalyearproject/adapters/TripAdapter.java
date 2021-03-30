@@ -1,7 +1,6 @@
 package com.example.finalyearproject.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
 
     private Context context;
     private List<Trip> trips = new ArrayList<>();
+    private OnItemClickListener clickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Trip trip);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener pClickListener) {
+        clickListener = pClickListener;
+    }
 
     @NonNull
     @Override
@@ -40,10 +48,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         holder.title.setText(currentTrip.getTitle());
         holder.description.setText(currentTrip.getDescription());
         String imageUrl = trips.get(position).getImageUrl();
-        if(imageUrl.equals("")) {
+        if (imageUrl.equals("")) {
             holder.imageView.setImageResource(R.drawable.im_no_image);
             return;
         }
+
+        Picasso.get().load(imageUrl).fit().into(holder.imageView);
     }
 
     @Override
@@ -56,6 +66,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         notifyDataSetChanged();
     }
 
+    public Trip getTripAt(int position) {
+        return trips.get(position);
+    }
+
+    public Trip getTripById(int tripId) {
+        for (Trip trip : trips) {
+            if (trip.getTripId() == tripId) {
+                return trip;
+            }
+        }
+        return null;
+    }
+
     class TripHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView description;
@@ -66,6 +89,16 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
             title = itemView.findViewById(R.id.trip_title);
             description = itemView.findViewById(R.id.trip_desc);
             imageView = itemView.findViewById(R.id.trips_tripImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (clickListener != null && position != RecyclerView.NO_POSITION) {
+                        clickListener.onItemClick(trips.get(position));
+                    }
+                }
+            });
         }
     }
 }

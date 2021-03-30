@@ -1,78 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     android:orientation="vertical"
     android:padding="@dimen/double_spacing"
-    tools:context=".AddContactActivity">
+    tools:context=".AddEditContactActivity">
 
     <ImageView
+        android:id="@+id/addContact_contactImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/addContact_contactImage"
         android:layout_marginBottom="@dimen/double_spacing"
-        android:src="@drawable/im_no_image"
-        />
+        android:src="@drawable/im_no_image" />
 
     <Button
         android:id="@+id/addContact_chooseImageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose Image"
         android:layout_marginBottom="@dimen/double_spacing"
-        />
+        android:text="Choose Image" />
 
-    <EditText
+    <androidx.cardview.widget.CardView
+        android:id="@+id/viewContact_contactDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addContact_firstName"
-        android:inputType="text"
-        />
+        android:layout_below="@id/viewContact_contactName">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addContact_lastName"
-        android:inputType="text"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/double_spacing">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addContact_emailAddress"
-        android:inputType="textEmailAddress"
-        />
+            <EditText
+                android:id="@+id/addContact_firstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/single_spacing"
+                android:hint="First Name"
+                android:inputType="text" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addContact_phoneNumber"
-        android:inputType="phone"
-        />
+            <EditText
+                android:id="@+id/addContact_lastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/single_spacing"
+                android:hint="Last Name"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/addContact_emailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/single_spacing"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/addContact_phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/single_spacing"
+                android:hint="Phone Number"
+                android:inputType="phone" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/addTrip_saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/medium_button"
-        android:text="Save"
-        android:layout_toRightOf="@id/addTrip_closeBtn"
         android:layout_margin="@dimen/single_spacing"
+        android:background="@drawable/medium_button"
         android:drawableLeft="@drawable/ic_save"
-        />
-
-    <Button
-        android:id="@+id/addTrip_closeBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/medium_button"
-        android:drawableLeft="@drawable/ic_close"
-        android:text="Cancel"
-        android:layout_margin="@dimen/single_spacing"
-        android:drawableStart="@drawable/ic_close" />
-
+        android:text="Save" />
 
 </LinearLayout>

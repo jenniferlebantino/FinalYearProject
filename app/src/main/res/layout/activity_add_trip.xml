@@ -1,105 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/double_spacing"
-    tools:context=".AddTripActivity">
+    android:id="@+id/addTrip"
+    tools:context=".AddEditTripActivity">
 
-    <ProgressBar
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:id="@+id/addTrip_progressBar"
-        />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/addTrip_tripImage"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:src="@drawable/im_no_image"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/double_spacing">
 
-    <Button
-        android:id="@+id/addTrip_chooseImageBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Image"
-        android:layout_marginBottom="@dimen/double_spacing"
-        />
+            <ImageView
+                android:id="@+id/addTrip_tripImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:src="@drawable/im_no_image" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addTrip_title"
-        android:inputType="text"
-        android:layout_marginBottom="@dimen/double_spacing"
-        />
+            <Button
+                android:id="@+id/addTrip_chooseImageBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:text="Choose Image"
+                android:textAllCaps="false" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addTrip_description"
-        android:inputType="text"
-        android:layout_marginBottom="@dimen/double_spacing"
-        />
+            <EditText
+                android:id="@+id/addTrip_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:hint="Title"
+                android:inputType="text" />
 
-    <Button
-        android:id="@+id/addTrip_startDateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Date"
-        android:layout_marginBottom="@dimen/double_spacing"
-        />
+            <EditText
+                android:id="@+id/addTrip_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:hint="Description"
+                android:inputType="text" />
 
-    <TextView
-        android:id="@+id/addTrip_startDateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:text="Start Date"
-        />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="@dimen/double_spacing"
+                android:paddingRight="@dimen/double_spacing"
+                android:layout_marginBottom="@dimen/single_spacing">
 
-    <Button
-        android:id="@+id/addTrip_endDateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End Date"
-        android:layout_marginBottom="@dimen/double_spacing"
-        />
+                <TextView
+                    android:id="@+id/addTrip_startDateTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/double_spacing"
+                    android:text="Start Date" />
 
-    <TextView
-        android:id="@+id/addTrip_endDateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:text="End Date"
-        />
+                <Button
+                    android:id="@+id/addTrip_startDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/double_spacing"
+                    android:text="Start Date"
+                    android:textAllCaps="false" />
 
+                <TextView
+                    android:id="@+id/addTrip_endDateTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/double_spacing"
+                    android:text="End Date" />
 
-    <Button
-        android:id="@+id/addTrip_saveBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/medium_button"
-        android:text="Save"
-        android:layout_toRightOf="@id/addTrip_closeBtn"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:drawableLeft="@drawable/ic_save"
-        />
+                <Button
+                    android:id="@+id/addTrip_endDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/addTrip_closeBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/medium_button"
-        android:drawableLeft="@drawable/ic_close"
-        android:text="Cancel"
-        android:layout_marginBottom="@dimen/double_spacing"
-    />
+            </LinearLayout>
 
-</LinearLayout>
+            <View
+                android:id="@+id/addtrip_contactsDivider"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginBottom="@dimen/single_spacing" />
+
+            <TextView
+                android:id="@+id/addTrip_selectedContacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selected Contacts" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/addTrip_selectContacts_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/contact_item_small" />
+            </HorizontalScrollView>
+
+            <Button
+                android:id="@+id/addTrip_addContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/single_spacing"
+                android:text="Select Contact"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/addTrip_saveBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/single_spacing"
+                android:padding="@dimen/double_spacing"
+                android:background="@drawable/medium_button"
+                android:drawableLeft="@drawable/ic_save"
+                android:layout_weight="1"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:drawableStart="@drawable/ic_save" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_container"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

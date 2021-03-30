@@ -66,4 +66,11 @@ public class MailAsyncTask extends AsyncTask<Void, Void, Void> {
         body = "Hi " + name + ", " + " \n\nWe are notifying you to let you know that a user has added you as a contact on our app. " +
                 "\n You may continue to receive emails from us in the future. If you believe this is a mistake, please contact us immediately. \n Thank you.";
     }
+
+    private void setTripInformationDetails()
+    {
+        subject = "Added to a Trip";
+        body = "Hi " + name + ", " + " \n\nWe are notifying you to let you know that a user has added you as a contact for a trip on our app. " +
+                "\n You may continue to receive emails from us in the future for this trip. If you believe this is a mistake, please contact us immediately. \n Thank you.";
+    }
 }

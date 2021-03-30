@@ -10,15 +10,17 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.finalyearproject.dao.ContactDao;
+import com.example.finalyearproject.dao.TripContactsDao;
 import com.example.finalyearproject.dao.TripDao;
 import com.example.finalyearproject.dao.UserDao;
 import com.example.finalyearproject.entities.Contact;
 import com.example.finalyearproject.entities.Trip;
+import com.example.finalyearproject.entities.TripContacts;
 import com.example.finalyearproject.entities.User;
 
 import java.util.Date;
 
-@Database(entities = {User.class, Trip.class, Contact.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Trip.class, Contact.class, TripContacts.class}, version = 2, exportSchema = false)
 public abstract class FYPAppDatabase extends RoomDatabase {
 
     //Singleton pattern
@@ -27,6 +29,7 @@ public abstract class FYPAppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract TripDao tripDao();
     public abstract ContactDao contactDao();
+    public abstract TripContactsDao tripContactsDao();
 
     //synchronised ensures that only one instance of this can be accessed even with multiple threads ongoing.
     public static synchronized FYPAppDatabase getInstance(Context context) {
@@ -51,11 +54,13 @@ public abstract class FYPAppDatabase extends RoomDatabase {
         private UserDao userDao;
         private TripDao tripDao;
         private ContactDao contactDao;
+        private TripContactsDao tripContactsDao;
 
         private PopulateDbAsyncTask(FYPAppDatabase db) {
             userDao = db.userDao();
             tripDao = db.tripDao();
             contactDao = db.contactDao();
+            tripContactsDao = db.tripContactsDao();
         }
 
         @Override

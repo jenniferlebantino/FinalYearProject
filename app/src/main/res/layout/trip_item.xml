@@ -5,7 +5,8 @@
     android:layout_marginEnd="@dimen/single_spacing"
     android:layout_marginStart="@dimen/single_spacing"
     android:layout_marginTop="@dimen/single_spacing"
-    android:radius="10dp">
+    android:radius="10dp"
+    android:id="@+id/trips_cardView">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -15,7 +16,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/trips_tripImage"
-            android:src="@drawable/im_no_image"
             android:paddingRight="@dimen/single_spacing"/>
 
         <TextView

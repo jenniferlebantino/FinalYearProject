@@ -12,14 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalyearproject.adapters.ContactAdapter;
 import com.example.finalyearproject.entities.Contact;
-import com.example.finalyearproject.entities.Trip;
 import com.example.finalyearproject.viewModel.ContactViewModel;
-import com.example.finalyearproject.viewModel.TripViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -28,6 +27,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ContactsFragment extends Fragment {
     public static final int ADD_CONTACT_REQUEST = 1;
+    public static final int EDIT_CONTACT_REQUEST = 2;
     private ContactViewModel contactViewModel;
     private FloatingActionButton addContactBtn;
 
@@ -50,7 +50,21 @@ public class ContactsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter();
+        final ContactAdapter adapter = new ContactAdapter(false);
+        adapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
+            @Override
+            public void onContactClick(Contact contact) {
+                Intent intent = new Intent(getContext(), AddEditContactActivity.class);
+                intent.putExtra(AddEditContactActivity.EXTRA_CONTACTID, contact.getContactId());
+                intent.putExtra(AddEditContactActivity.EXTRA_IMAGEURL, contact.getContactImageUrl());
+                intent.putExtra(AddEditContactActivity.EXTRA_FIRSTNAME, contact.getFirstName());
+                intent.putExtra(AddEditContactActivity.EXTRA_LASTNAME, contact.getLastName());
+                intent.putExtra(AddEditContactActivity.EXTRA_EMAILADDRESS, contact.getEmailAddress());
+                intent.putExtra(AddEditContactActivity.EXTRA_PHONENUMBER, contact.getPhoneNumber());
+                startActivityForResult(intent, EDIT_CONTACT_REQUEST);
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
@@ -63,11 +77,26 @@ public class ContactsFragment extends Fragment {
         };
 
         contactViewModel.getAllContacts().observe(getViewLifecycleOwner(), observer);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                contactViewModel.delete(adapter.getContactAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(getContext(), "Contact successfully deleted.", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
         return v;
     }
 
     private void launchAddContact() {
-        Intent launchAddContactsActivity = new Intent(getActivity(), AddContactActivity.class);
+        Intent launchAddContactsActivity = new Intent(getActivity(), AddEditContactActivity.class);
         startActivityForResult(launchAddContactsActivity, ADD_CONTACT_REQUEST);
     }
 
@@ -76,15 +105,30 @@ public class ContactsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == ADD_CONTACT_REQUEST && resultCode == RESULT_OK) {
-            String firstName = data.getStringExtra(AddContactActivity.EXTRA_FIRSTNAME);
-            String lastName = data.getStringExtra(AddContactActivity.EXTRA_LASTNAME);
-            String emailAddress = data.getStringExtra(AddContactActivity.EXTRA_EMAILADDRESS);
-            String phoneNumber = data.getStringExtra(AddContactActivity.EXTRA_PHONENUMBER);
-            String contactImageUrl = data.getStringExtra(AddContactActivity.EXTRA_IMAGEURL);
+            String firstName = data.getStringExtra(AddEditContactActivity.EXTRA_FIRSTNAME);
+            String lastName = data.getStringExtra(AddEditContactActivity.EXTRA_LASTNAME);
+            String emailAddress = data.getStringExtra(AddEditContactActivity.EXTRA_EMAILADDRESS);
+            String phoneNumber = data.getStringExtra(AddEditContactActivity.EXTRA_PHONENUMBER);
+            String contactImageUrl = data.getStringExtra(AddEditContactActivity.EXTRA_IMAGEURL);
 
             Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber, contactImageUrl);
             contactViewModel.insert(contact);
             Toast.makeText(getActivity(), "Contact Saved", Toast.LENGTH_SHORT).show();
+        } else if(requestCode == EDIT_CONTACT_REQUEST && resultCode == RESULT_OK) {
+            int id = data.getIntExtra(AddEditContactActivity.EXTRA_CONTACTID, -1);
+            if (id == -1 ) {
+                Toast.makeText(getActivity(), "Note couldn't be updated.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String firstName = data.getStringExtra(AddEditContactActivity.EXTRA_FIRSTNAME);
+            String lastName = data.getStringExtra(AddEditContactActivity.EXTRA_LASTNAME);
+            String emailAddress = data.getStringExtra(AddEditContactActivity.EXTRA_EMAILADDRESS);
+            String phoneNumber = data.getStringExtra(AddEditContactActivity.EXTRA_PHONENUMBER);
+            String contactImageUrl = data.getStringExtra(AddEditContactActivity.EXTRA_IMAGEURL);
+            Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber, contactImageUrl);
+            contact.setContactId(id);
+            contactViewModel.update(contact);
+            Toast.makeText(getActivity(), "Note has been updated.", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getActivity(), "Unable to Save", Toast.LENGTH_SHORT).show();
