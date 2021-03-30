@@ -1,4 +1,4 @@
-package com.example.finalyearproject;
+package com.example.finalyearproject.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,17 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.finalyearproject.dummy.DummyContent.DummyItem;
+import com.example.finalyearproject.R;
 import com.example.finalyearproject.entities.Contact;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdapter.SelectContactHolder> {
 
     private List<Contact> allContacts = new ArrayList<>();
