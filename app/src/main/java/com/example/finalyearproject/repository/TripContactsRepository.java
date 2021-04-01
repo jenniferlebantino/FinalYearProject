@@ -16,12 +16,12 @@ import java.util.List;
 
 public class TripContactsRepository {
     private TripContactsDao tripContactsDao;
-    private ContactRepository contactRepository;
     private LiveData<List<TripContacts>> allTripContacts;
 
     public TripContactsRepository(Application application) {
         FYPAppDatabase database = FYPAppDatabase.getInstance(application);
         tripContactsDao = database.tripContactsDao();
+        allTripContacts = tripContactsDao.getAllTripContacts();
     }
 
     public void insert(TripContacts tripContact) { new InsertTripContactAsyncTask(tripContactsDao).execute(tripContact); }
@@ -30,11 +30,17 @@ public class TripContactsRepository {
 
     public void delete(TripContacts tripContact) { new DeleteTripContactAsyncTask(tripContactsDao).execute(tripContact);}
 
-    public LiveData<List<TripContacts>> getAllTripContactTrips(int tripId) {
+    public LiveData<List<TripContacts>> getAllTripContactByTripId(int tripId) {
         String queryString = "SELECT * FROM tripContacts_table WHERE tripId LIKE '" + Integer.toString(tripId) + "'";
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(queryString);
         return tripContactsDao.getAllTripContactsByTripId(query);
     }
+
+
+    public LiveData<List<TripContacts>> getAllTripContacts() {
+        return allTripContacts;
+    }
+
 
     //Async Tasks
     private static class InsertTripContactAsyncTask extends AsyncTask<TripContacts, Void, Void> {

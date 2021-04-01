@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,7 +33,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddEditTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     public static final String EXTRA_TRIPID = "com.example.finalyearproject.EXTRA_TRIPID";
@@ -41,12 +44,13 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     public static final String EXTRA_STARTDATE = "com.example.finalyearproject.EXTRA_STARTDATE";
     public static final String EXTRA_ENDDATE = "com.example.finalyearproject.EXTRA_ENDDATE";
     public static final String EXTRA_IMAGEURL = "com.example.finalyearproject.EXTRA_IMAGEURL";
+    public static final String EXTRA_SELECTEDCONTACTS = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS";
     public static final int PICK_IMAGE_REQUEST = 1;
+    public static final int SELECT_CONTACTS_REQUEST = 2;
 
     private EditText titleTxtBox;
     private EditText descriptionTxtBox;
-    private Button saveBtn;
-    private Button closeBtn;
+    private FloatingActionButton saveBtn;
     private Button chooseImageBtn;
     private Button startDateBtn;
     private TextView startDateTxtView;
@@ -55,9 +59,11 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     private boolean startDateBtnClicked;
     private TextView endDateTxtView;
     private ImageView tripImageView;
-    private FrameLayout fragmentContainer;
+    private TextView example;
 
     private Uri imageUri;
+    private List<Integer> selectedContacts = new ArrayList<>();
+    private String selectedContactsString = "";
 
     private StorageReference storageReference;
     private DatabaseReference dbReference;
@@ -98,7 +104,9 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         selectContactBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment();
+                Intent intent = new Intent(AddEditTripActivity.this, SelectContactsActivity.class);
+                intent.putExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS, "");
+                startActivityForResult(intent, SELECT_CONTACTS_REQUEST);
             }
         });
 
@@ -111,19 +119,10 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
             }
         });
 
-        closeBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                launchTrips();
-            }
-        });
-
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_TRIPID)) {
             setTitle("Edit Contact");
-
+            String x = intent.getStringExtra(EXTRA_TITLE);
             titleTxtBox.setText(intent.getStringExtra(EXTRA_TITLE));
             descriptionTxtBox.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             startDateTxtView.setText(intent.getStringExtra(EXTRA_STARTDATE));
@@ -144,11 +143,6 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         }
     }
 
-    private void openFragment() {
-        Intent intent = new Intent(AddEditTripActivity.this, SelectContactsActivity.class);
-        startActivity(intent);
-    }
-
     private void initialise() {
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
         dbReference = FirebaseDatabase.getInstance().getReference("uploads");
@@ -166,10 +160,9 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         endDateTxtView = findViewById(R.id.addTrip_endDateTxt);
 
         selectContactBtn = findViewById(R.id.addTrip_addContact);
-        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+        example = findViewById(R.id.example);
 
-        saveBtn = (Button)findViewById(R.id.addTrip_saveBtn);
-        closeBtn = (Button)findViewById(R.id.addTrip_closeBtn);
+        saveBtn = findViewById(R.id.addTrip_saveBtn);
     }
 
     private void OpenImageFileSelector() {
@@ -183,10 +176,21 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
-        {
-            imageUri = data.getData();
-            Picasso.get().load(imageUri).into(tripImageView);
+        if(data != null) {
+            if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data.getData() != null)
+            {
+                imageUri = data.getData();
+                Picasso.get().load(imageUri).into(tripImageView);
+            }
+            else if (requestCode == SELECT_CONTACTS_REQUEST && resultCode == RESULT_OK) {
+                selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
+                example.setText(selectedContactsString);
+                String[] tokens = selectedContactsString.split(",");
+
+                for(int i = 0; i<tokens.length; i++) {
+                    selectedContacts.add(Integer.parseInt(tokens[i]));
+                }
+            }
         }
     }
 
@@ -260,6 +264,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         tripData.putExtra(EXTRA_STARTDATE, startDate);
         tripData.putExtra(EXTRA_ENDDATE, endDate);
         tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
+        tripData.putExtra(EXTRA_SELECTEDCONTACTS, selectedContactsString);
 
         int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
         if (id != -1) {
@@ -268,11 +273,6 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
 
         setResult(RESULT_OK, tripData);
         finish();
-    }
-
-    private void launchTrips() {
-        Intent launchTripsFragment= new Intent(this, TripsFragment.class);
-        startActivity(launchTripsFragment);
     }
 
     @Override

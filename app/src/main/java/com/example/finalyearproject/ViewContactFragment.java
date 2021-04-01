@@ -48,7 +48,7 @@ public class ViewContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_contact, container, false);
 
-        adapter = new ContactAdapter(false);
+        adapter = new ContactAdapter(false, false);
 
         contactImageView = v.findViewById(R.id.viewContact_contactImage);
         nameTxtView =  v.findViewById(R.id.viewContact_contactName);

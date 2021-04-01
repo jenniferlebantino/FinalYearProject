@@ -20,7 +20,7 @@ import com.example.finalyearproject.entities.User;
 
 import java.util.Date;
 
-@Database(entities = {User.class, Trip.class, Contact.class, TripContacts.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Trip.class, Contact.class, TripContacts.class}, version = 1, exportSchema = false)
 public abstract class FYPAppDatabase extends RoomDatabase {
 
     //Singleton pattern

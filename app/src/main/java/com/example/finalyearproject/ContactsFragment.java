@@ -50,7 +50,8 @@ public class ContactsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter(false);
+        final ContactAdapter adapter = new ContactAdapter(false, false);
+/*
         adapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
             @Override
             public void onContactClick(Contact contact) {
@@ -64,7 +65,7 @@ public class ContactsFragment extends Fragment {
                 startActivityForResult(intent, EDIT_CONTACT_REQUEST);
             }
         });
-
+*/
         recyclerView.setAdapter(adapter);
 
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);
@@ -79,7 +80,7 @@ public class ContactsFragment extends Fragment {
         contactViewModel.getAllContacts().observe(getViewLifecycleOwner(), observer);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.RIGHT) {
+                ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -89,6 +90,27 @@ public class ContactsFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 contactViewModel.delete(adapter.getContactAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(getContext(), "Contact successfully deleted.", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Intent intent = new Intent(getContext(), AddEditContactActivity.class);
+                Contact contact = adapter.getContactAt(viewHolder.getAdapterPosition());
+                intent.putExtra(AddEditContactActivity.EXTRA_CONTACTID, contact.getContactId());
+                intent.putExtra(AddEditContactActivity.EXTRA_IMAGEURL, contact.getContactImageUrl());
+                intent.putExtra(AddEditContactActivity.EXTRA_FIRSTNAME, contact.getFirstName());
+                intent.putExtra(AddEditContactActivity.EXTRA_LASTNAME, contact.getLastName());
+                intent.putExtra(AddEditContactActivity.EXTRA_EMAILADDRESS, contact.getEmailAddress());
+                intent.putExtra(AddEditContactActivity.EXTRA_PHONENUMBER, contact.getPhoneNumber());
+                startActivityForResult(intent, EDIT_CONTACT_REQUEST);
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -116,8 +138,8 @@ public class ContactsFragment extends Fragment {
             Toast.makeText(getActivity(), "Contact Saved", Toast.LENGTH_SHORT).show();
         } else if(requestCode == EDIT_CONTACT_REQUEST && resultCode == RESULT_OK) {
             int id = data.getIntExtra(AddEditContactActivity.EXTRA_CONTACTID, -1);
-            if (id == -1 ) {
-                Toast.makeText(getActivity(), "Note couldn't be updated.", Toast.LENGTH_SHORT).show();
+            if (id == -1) {
+                Toast.makeText(getActivity(), "Contact couldn't be updated.", Toast.LENGTH_SHORT).show();
                 return;
             }
             String firstName = data.getStringExtra(AddEditContactActivity.EXTRA_FIRSTNAME);
@@ -128,10 +150,10 @@ public class ContactsFragment extends Fragment {
             Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber, contactImageUrl);
             contact.setContactId(id);
             contactViewModel.update(contact);
-            Toast.makeText(getActivity(), "Note has been updated.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Contact has been updated.", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getActivity(), "Unable to Save", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Unable to save contact.", Toast.LENGTH_SHORT).show();
         }
 
     }

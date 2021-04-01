@@ -6,9 +6,24 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tripContacts_table")
 public class TripContacts {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    private int tripContactId;
+
     private int tripId;
     private int contactId;
+
+    public TripContacts(int tripId, int contactId) {
+        this.tripId = tripId;
+        this.contactId = contactId;
+    }
+
+    public int getTripContactId() {
+        return tripContactId;
+    }
+
+    public void setTripContactId(int tripContactId) {
+        this.tripContactId = tripContactId;
+    }
 
     public int getTripId() {
         return tripId;

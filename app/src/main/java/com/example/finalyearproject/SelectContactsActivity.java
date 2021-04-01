@@ -1,15 +1,14 @@
 package com.example.finalyearproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.finalyearproject.adapters.ContactAdapter;
 import com.example.finalyearproject.entities.Contact;
 import com.example.finalyearproject.viewModel.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,21 +19,21 @@ import android.view.View;
 import java.util.List;
 
 public class SelectContactsActivity extends AppCompatActivity {
+    public static final String EXTRA_SELECTEDCONTACTS_CONTACTS = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS";
     private ContactViewModel contactVM;
+    private FloatingActionButton saveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_contacts);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        RecyclerView rv = findViewById(R.id.contacts_recycler_view);
+
+        RecyclerView rv = findViewById(R.id.selectContacts_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter(false);
+        final ContactAdapter adapter = new ContactAdapter(false, true);
         rv.setAdapter(adapter);
-
         contactVM = new ViewModelProvider(SelectContactsActivity.this).get(ContactViewModel.class);
         final Observer<List<Contact>> observer = new Observer<List<Contact>>() {
             @Override
@@ -42,16 +41,27 @@ public class SelectContactsActivity extends AppCompatActivity {
                 adapter.setContacts(contacts);
             }
         };
-
         contactVM.getAllContacts().observe(SelectContactsActivity.this, observer);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        saveBtn = findViewById(R.id.selectContacts_addBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                saveSelectedContacts(adapter.getSelectedContacts());
             }
         });
+    }
+
+    private void saveSelectedContacts(List<Integer> contactIds) {
+        StringBuilder builder = new StringBuilder();
+        for(Integer contactId : contactIds) {
+            builder.append(contactId + ",");
+        }
+        String contacts = builder.length() > 0 ? builder.substring(0, builder.length()) : "";
+
+        Intent selectedContacts = new Intent();
+        selectedContacts.putExtra(EXTRA_SELECTEDCONTACTS_CONTACTS, contacts);
+        setResult(RESULT_OK, selectedContacts);
+        finish();
     }
 }

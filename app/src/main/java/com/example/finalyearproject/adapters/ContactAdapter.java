@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,11 +24,18 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactHolder> {
     private List<Contact> contacts = new ArrayList<>();
+    private List<Integer> selectedContacts = new ArrayList<>();
     private boolean smallContactItem;
+    private boolean checkbox;
     private OnContactClickListener listener;
 
-    public ContactAdapter(boolean pSmallContactItem) {
+    public ContactAdapter(boolean pSmallContactItem, boolean pCheckbox) {
+        checkbox = pCheckbox;
         smallContactItem = pSmallContactItem;
+    }
+
+    public ContactAdapter() {
+
     }
 
     @NonNull
@@ -49,18 +57,35 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
         return new ContactHolder(itemView);
     }
 
+    public List<Integer> getSelectedContacts() {
+        return selectedContacts;
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull ContactHolder holder, int position) {
-        Contact contact = contacts.get(position);
+    public void onBindViewHolder(@NonNull final ContactHolder holder, int position) {
+        final Contact contact = contacts.get(position);
         holder.name.setText(contact.getFirstName() + " " + contact.getLastName());
         String imageUrl = contact.getContactImageUrl();
         if(imageUrl.equals(""))
         {
             holder.contactImageView.setImageResource(R.drawable.im_no_image);
-            return;
         }
         else {
             Picasso.get().load(imageUrl).fit().into(holder.contactImageView);
+        }
+
+        if(checkbox) {
+            holder.contactCheckBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(holder.contactCheckBox.isChecked()) {
+                        selectedContacts.add(contact.getContactId());
+                    }
+                    else {
+                        selectedContacts.remove(contact.getContactId());
+                    }
+                }
+            });
         }
 
     }
@@ -91,30 +116,29 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
     class ContactHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private ImageView contactImageView;
+        private CheckBox contactCheckBox;
 
         public ContactHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contacts_name);
             contactImageView = itemView.findViewById(R.id.contacts_contactImage);
-            if(smallContactItem)
+
+            if(checkbox)
             {
-                Button closeBtn = itemView.findViewById(R.id.contact_item_small_removeBtn);
-                closeBtn.setOnClickListener(new View.OnClickListener() {
+                contactCheckBox = itemView.findViewById(R.id.contacts_checkBox);
+                contactCheckBox.setVisibility(CheckBox.VISIBLE);
+            }
+            else {
+                itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: Remove contact.
+                        int position = getAdapterPosition();
+                        if(listener != null && position != RecyclerView.NO_POSITION)
+                            listener.onContactClick(contacts.get(position));
                     }
                 });
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if(listener != null && position != RecyclerView.NO_POSITION)
-                    listener.onContactClick(contacts.get(position));
-                }
-            });
         }
     }
 

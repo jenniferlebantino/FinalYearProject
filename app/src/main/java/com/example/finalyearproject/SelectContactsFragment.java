@@ -31,7 +31,7 @@ public class SelectContactsFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter(false);
+        final ContactAdapter adapter = new ContactAdapter(false, true);
         rv.setAdapter(adapter);
 
         contactVM = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);

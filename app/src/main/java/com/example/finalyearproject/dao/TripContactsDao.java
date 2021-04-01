@@ -25,6 +25,11 @@ public interface TripContactsDao {
     @Delete
     void delete(TripContacts contact);
 
+    @Query ("SELECT * FROM tripContacts_table ORDER BY tripContactId")
+    LiveData<List<TripContacts>> getAllTripContacts();
+
+
+
 //    @Query("SELECT contactId FROM tripContacts_table WHERE tripId LIKE '% :pTripId %' ORDER BY contactId")
 //    LiveData<List<TripContacts>> getAllTripContactsByTripId(int pTripId);
     @RawQuery(observedEntities = TripContacts.class)

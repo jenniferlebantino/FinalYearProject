@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/addTrip_tripDetails">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,22 +53,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingLeft="@dimen/double_spacing"
-                android:paddingRight="@dimen/double_spacing"
+                android:paddingLeft="@dimen/single_spacing"
+                android:paddingRight="@dimen/single_spacing"
                 android:layout_marginBottom="@dimen/single_spacing">
 
                 <TextView
                     android:id="@+id/addTrip_startDateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/double_spacing"
+                    android:layout_marginRight="@dimen/single_spacing"
                     android:text="Start Date" />
 
                 <Button
                     android:id="@+id/addTrip_startDateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/double_spacing"
+                    android:layout_marginRight="@dimen/single_spacing"
                     android:text="Start Date"
                     android:textAllCaps="false" />
 
@@ -75,7 +76,7 @@
                     android:id="@+id/addTrip_endDateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/double_spacing"
+                    android:layout_marginRight="@dimen/single_spacing"
                     android:text="End Date" />
 
                 <Button
@@ -84,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:text="End Date"
                     android:textAllCaps="false" />
-
             </LinearLayout>
 
             <View
@@ -100,17 +100,11 @@
                 android:layout_height="wrap_content"
                 android:text="Selected Contacts" />
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/addTrip_selectContacts_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/contact_item_small" />
-            </HorizontalScrollView>
+            <TextView
+                android:id="@+id/example"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Example"/>
 
             <Button
                 android:id="@+id/addTrip_addContact"
@@ -120,7 +114,21 @@
                 android:text="Select Contact"
                 android:textAllCaps="false" />
 
-            <Button
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/single_spacing"
+                android:id="@+id/addTrip_selectContactsSection">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/addTrip_selectContacts_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/contact_item_small" />
+            </HorizontalScrollView>
+
+<!--            <Button
                 android:id="@+id/addTrip_saveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,13 +139,20 @@
                 android:layout_weight="1"
                 android:text="Save"
                 android:textAllCaps="false"
-                android:drawableStart="@drawable/ic_save" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/fragment_container"/>
+                android:drawableStart="@drawable/ic_save" />-->
 
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_save"
+        android:layout_margin="@dimen/single_spacing"
+        android:id="@+id/addTrip_saveBtn"
+        android:layout_alignBottom="@+id/addTrip_tripDetails"
+        android:layout_alignRight="@+id/addTrip_tripDetails"
+        android:contentDescription="save button"
+        android:layout_alignEnd="@+id/addTrip_tripDetails" />
 </RelativeLayout>
