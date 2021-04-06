@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addTrip"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/addTrip"
     tools:context=".AddEditTripActivity">
 
     <ScrollView
+        android:id="@+id/addTrip_tripDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/addTrip_tripDetails">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,9 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/double_spacing"
                 android:paddingLeft="@dimen/single_spacing"
-                android:paddingRight="@dimen/single_spacing"
-                android:layout_marginBottom="@dimen/single_spacing">
+                android:paddingRight="@dimen/single_spacing">
 
                 <TextView
                     android:id="@+id/addTrip_startDateTxt"
@@ -91,11 +91,12 @@
                 android:id="@+id/addtrip_contactsDivider"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginBottom="@dimen/single_spacing" />
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:background="?android:attr/listDivider" />
 
             <TextView
                 android:id="@+id/addTrip_selectedContacts"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Selected Contacts" />
@@ -104,7 +105,7 @@
                 android:id="@+id/example"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Example"/>
+                android:text="Example" />
 
             <Button
                 android:id="@+id/addTrip_addContact"
@@ -115,10 +116,10 @@
                 android:textAllCaps="false" />
 
             <HorizontalScrollView
+                android:id="@+id/addTrip_selectContactsSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/single_spacing"
-                android:id="@+id/addTrip_selectContactsSection">
+                android:paddingBottom="@dimen/double_spacing">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/addTrip_selectContacts_recycler_view"
@@ -128,31 +129,40 @@
                     tools:listitem="@layout/contact_item_small" />
             </HorizontalScrollView>
 
-<!--            <Button
-                android:id="@+id/addTrip_saveBtn"
+            <View
+                android:id="@+id/addTrip_tripItinerary"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/addTrip_itinerarySection"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/single_spacing"
-                android:padding="@dimen/double_spacing"
-                android:background="@drawable/medium_button"
-                android:drawableLeft="@drawable/ic_save"
-                android:layout_weight="1"
-                android:text="Save"
-                android:textAllCaps="false"
-                android:drawableStart="@drawable/ic_save" />-->
+                android:text="Itinerary" />
+
+            <EditText
+                android:id="@+id/addTrip_addItinerary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:hint="What are your plans?"
+                android:inputType="text" />
 
         </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTrip_saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_save"
-        android:layout_margin="@dimen/single_spacing"
-        android:id="@+id/addTrip_saveBtn"
-        android:layout_alignBottom="@+id/addTrip_tripDetails"
+        android:layout_alignEnd="@+id/addTrip_tripDetails"
         android:layout_alignRight="@+id/addTrip_tripDetails"
+        android:layout_alignBottom="@+id/addTrip_tripDetails"
+        android:layout_margin="@dimen/single_spacing"
+        android:backgroundTint="@color/colorPrimary"
         android:contentDescription="save button"
-        android:layout_alignEnd="@+id/addTrip_tripDetails" />
+        android:src="@drawable/ic_save" />
 </RelativeLayout>

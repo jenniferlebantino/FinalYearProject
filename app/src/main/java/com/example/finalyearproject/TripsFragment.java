@@ -140,6 +140,7 @@ public class TripsFragment extends Fragment {
                 intent.putExtra(AddEditTripActivity.EXTRA_STARTDATE, trip.getStartDate());
                 intent.putExtra(AddEditTripActivity.EXTRA_ENDDATE, trip.getEndDate());
                 intent.putExtra(AddEditTripActivity.EXTRA_IMAGEURL, trip.getImageUrl());
+                intent.putExtra(AddEditTripActivity.EXTRA_ITINERARY, trip.getItinerary());
                 intent.putExtra(AddEditTripActivity.EXTRA_SELECTEDCONTACTS, "");
                 startActivityForResult(intent, EDIT_TRIP_REQUEST);
             }
@@ -177,8 +178,9 @@ public class TripsFragment extends Fragment {
             String startDate = data.getStringExtra(AddEditTripActivity.EXTRA_STARTDATE);
             String endDate = data.getStringExtra(AddEditTripActivity.EXTRA_ENDDATE);
             String imageUrl = data.getStringExtra(AddEditTripActivity.EXTRA_IMAGEURL);
+            String itinerary = data.getStringExtra(AddEditTripActivity.EXTRA_ITINERARY);
 
-            Trip trip = new Trip(title, description, startDate, endDate, imageUrl);
+            Trip trip = new Trip(title, description, startDate, endDate, imageUrl, itinerary);
             tripViewModel.insert(trip);
 
             selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
@@ -208,8 +210,9 @@ public class TripsFragment extends Fragment {
             String startDate = data.getStringExtra(AddEditTripActivity.EXTRA_STARTDATE);
             String endDate = data.getStringExtra(AddEditTripActivity.EXTRA_ENDDATE);
             String imageUrl = data.getStringExtra(AddEditTripActivity.EXTRA_IMAGEURL);
+            String itinerary = data.getStringExtra(AddEditTripActivity.EXTRA_ITINERARY);
 
-            Trip trip = new Trip(title, description, startDate, endDate, imageUrl);
+            Trip trip = new Trip(title, description, startDate, endDate, imageUrl, itinerary);
             tripViewModel.update(trip);
 
             selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);

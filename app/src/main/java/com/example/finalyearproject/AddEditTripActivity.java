@@ -44,6 +44,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     public static final String EXTRA_STARTDATE = "com.example.finalyearproject.EXTRA_STARTDATE";
     public static final String EXTRA_ENDDATE = "com.example.finalyearproject.EXTRA_ENDDATE";
     public static final String EXTRA_IMAGEURL = "com.example.finalyearproject.EXTRA_IMAGEURL";
+    public static final String EXTRA_ITINERARY = "com.example.finalyearproject.EXTRA_ITINERARY";
     public static final String EXTRA_SELECTEDCONTACTS = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS";
     public static final int PICK_IMAGE_REQUEST = 1;
     public static final int SELECT_CONTACTS_REQUEST = 2;
@@ -60,6 +61,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     private TextView endDateTxtView;
     private ImageView tripImageView;
     private TextView example;
+    private EditText itineraryTxtBox;
 
     private Uri imageUri;
     private List<Integer> selectedContacts = new ArrayList<>();
@@ -127,6 +129,8 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
             descriptionTxtBox.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             startDateTxtView.setText(intent.getStringExtra(EXTRA_STARTDATE));
             endDateTxtView.setText(intent.getStringExtra(EXTRA_ENDDATE));
+            itineraryTxtBox.setText(intent.getStringExtra(EXTRA_ITINERARY));
+            String test = intent.getStringExtra(EXTRA_ITINERARY);
             loadImage(EXTRA_IMAGEURL);
         }
         else {
@@ -161,6 +165,8 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
 
         selectContactBtn = findViewById(R.id.addTrip_addContact);
         example = findViewById(R.id.example);
+
+        itineraryTxtBox = findViewById(R.id.addTrip_addItinerary);
 
         saveBtn = findViewById(R.id.addTrip_saveBtn);
     }
@@ -206,6 +212,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         String description = descriptionTxtBox.getText().toString();
         String startDate = startDateTxtView.getText().toString();
         String endDate = endDateTxtView.getText().toString();
+        String itinerary = itineraryTxtBox.getText().toString();
         String imageUrl = imageUri == null ? "": imageUri.toString();
 
         if (imageUri != null)
@@ -264,6 +271,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         tripData.putExtra(EXTRA_STARTDATE, startDate);
         tripData.putExtra(EXTRA_ENDDATE, endDate);
         tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
+        tripData.putExtra(EXTRA_ITINERARY, itinerary);
         tripData.putExtra(EXTRA_SELECTEDCONTACTS, selectedContactsString);
 
         int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);

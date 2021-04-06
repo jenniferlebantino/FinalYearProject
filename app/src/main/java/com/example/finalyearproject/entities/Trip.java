@@ -9,24 +9,24 @@ public class Trip {
     @PrimaryKey(autoGenerate = true)
     private int tripId;
 
-    //TODO: Figure out foreign keys.
-//    private int userId;
     private String title;
     private String description;
     private String startDate;
     private String endDate;
     private String imageUrl;
+    private String itinerary;
 
     //TODO: Create location class.
 //    private String location;
 //    public ArrayList<ItineraryItem> itinerary;
 
-    public Trip(String title, String description, String startDate, String endDate, String imageUrl) {
+    public Trip(String title, String description, String startDate, String endDate, String imageUrl, String itinerary) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.imageUrl = imageUrl;
+        this.itinerary = itinerary;
 //        this.location = location;
 //        itinerary = new ArrayList<ItineraryItem>();
     }
@@ -79,4 +79,11 @@ public class Trip {
         this.imageUrl = imageUrl;
     }
 
+    public String getItinerary() {
+        return itinerary;
+    }
+
+    public void setItinerary(String itinerary) {
+        this.itinerary = itinerary;
+    }
 }
