@@ -9,14 +9,11 @@ public class Contact {
     @PrimaryKey(autoGenerate = true)
     private int contactId;
 
+    private String userId;
     private String firstName;
-
     private String lastName;
-
     private String emailAddress;
-
     private String phoneNumber;
-
     private String contactImageUrl;
 
     public Contact(String firstName, String lastName, String emailAddress, String phoneNumber, String contactImageUrl)
@@ -34,6 +31,14 @@ public class Contact {
 
     public int getContactId() {
         return contactId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

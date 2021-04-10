@@ -4,13 +4,11 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.example.finalyearproject.dao.TripDao;
 import com.example.finalyearproject.database.FYPAppDatabase;
 import com.example.finalyearproject.entities.Trip;
-import com.example.finalyearproject.entities.User;
 
 import java.util.List;
 

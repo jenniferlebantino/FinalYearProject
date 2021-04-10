@@ -20,6 +20,7 @@ import com.example.finalyearproject.adapters.ContactAdapter;
 import com.example.finalyearproject.entities.Contact;
 import com.example.finalyearproject.viewModel.ContactViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ import static android.app.Activity.RESULT_OK;
 public class ContactsFragment extends Fragment {
     public static final int ADD_CONTACT_REQUEST = 1;
     public static final int EDIT_CONTACT_REQUEST = 2;
+
+    private FirebaseAuth authenticate;
+
     private ContactViewModel contactViewModel;
     private FloatingActionButton addContactBtn;
 
@@ -35,6 +39,8 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        authenticate = FirebaseAuth.getInstance();
 
         addContactBtn = v.findViewById(R.id.contacts_addBtn);
         addContactBtn.setOnClickListener(new View.OnClickListener()
@@ -134,9 +140,11 @@ public class ContactsFragment extends Fragment {
             String contactImageUrl = data.getStringExtra(AddEditContactActivity.EXTRA_IMAGEURL);
 
             Contact contact = new Contact(firstName, lastName, emailAddress, phoneNumber, contactImageUrl);
+            contact.setUserId(authenticate.getCurrentUser().getUid());
             contactViewModel.insert(contact);
             Toast.makeText(getActivity(), "Contact Saved", Toast.LENGTH_SHORT).show();
-        } else if(requestCode == EDIT_CONTACT_REQUEST && resultCode == RESULT_OK) {
+        }
+        else if(requestCode == EDIT_CONTACT_REQUEST && resultCode == RESULT_OK) {
             int id = data.getIntExtra(AddEditContactActivity.EXTRA_CONTACTID, -1);
             if (id == -1) {
                 Toast.makeText(getActivity(), "Contact couldn't be updated.", Toast.LENGTH_SHORT).show();

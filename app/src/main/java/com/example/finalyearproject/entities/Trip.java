@@ -9,6 +9,7 @@ public class Trip {
     @PrimaryKey(autoGenerate = true)
     private int tripId;
 
+    private String userId;
     private String title;
     private String description;
     private String startDate;
@@ -37,6 +38,14 @@ public class Trip {
 
     public int getTripId() {
         return tripId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {

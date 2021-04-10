@@ -1,6 +1,7 @@
 package com.example.finalyearproject;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -26,6 +28,7 @@ import com.example.finalyearproject.viewModel.ContactViewModel;
 import com.example.finalyearproject.viewModel.TripContactsViewModel;
 import com.example.finalyearproject.viewModel.TripViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +48,7 @@ public class TripsFragment extends Fragment {
     private TripContactsAdapter tripContactsAdapter;
     private FloatingActionButton addTripBtn;
 
+    private FirebaseAuth authenticate;
     private List<String> selectedContacts = new ArrayList<>();
     private String selectedContactsString = "";
 
@@ -52,6 +56,8 @@ public class TripsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_trips, container, false);
+
+        authenticate = FirebaseAuth.getInstance();
 
         addTripBtn = v.findViewById(R.id.trips_addBtn);
         addTripBtn.setOnClickListener(new View.OnClickListener()
@@ -181,6 +187,7 @@ public class TripsFragment extends Fragment {
             String itinerary = data.getStringExtra(AddEditTripActivity.EXTRA_ITINERARY);
 
             Trip trip = new Trip(title, description, startDate, endDate, imageUrl, itinerary);
+            trip.setUserId(authenticate.getCurrentUser().getUid());
             tripViewModel.insert(trip);
 
             selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
@@ -213,6 +220,8 @@ public class TripsFragment extends Fragment {
             String itinerary = data.getStringExtra(AddEditTripActivity.EXTRA_ITINERARY);
 
             Trip trip = new Trip(title, description, startDate, endDate, imageUrl, itinerary);
+            trip.setTripId(id);
+            trip.setUserId(authenticate.getCurrentUser().getUid());
             tripViewModel.update(trip);
 
             selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
@@ -224,6 +233,12 @@ public class TripsFragment extends Fragment {
                     tripContactsViewModel.update(tripContact);
                 }
             }
+
+            Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("TRIPS_FRAGMENT");
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
 
             Toast.makeText(getActivity(), "Trip has been updated.", Toast.LENGTH_SHORT).show();
         }

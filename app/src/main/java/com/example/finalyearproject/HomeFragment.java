@@ -4,48 +4,44 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalyearproject.adapters.TripAdapter;
-import com.example.finalyearproject.entities.User;
-import com.example.finalyearproject.viewModel.UserViewModel;
-
-import java.util.List;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class HomeFragment extends Fragment {
+    
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-    private UserViewModel userViewModel;
+        /**
+         * Manipulates the map once available.
+         * This callback is triggered when the map is ready to be used.
+         * This is where we can add markers or lines, add listeners or move the camera.
+         * In this case, we just add a marker near Sydney, Australia.
+         * If Google Play services is not installed on the device, the user will be prompted to
+         * install it inside the SupportMapFragment. This method will only be triggered once the
+         * user has installed Google Play services and returned to the app.
+         */
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            LatLng sydney = new LatLng(-34, 151);
+            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        }
+    };
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-//
-//        RecyclerView recyclerView = v.findViewById(R.id.home_recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-//        recyclerView.setHasFixedSize(true);
-//
-//        final TripAdapter adapter = new TripAdapter();
-//        recyclerView.setAdapter(adapter);
-//
-//        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-//
-//        final Observer<List<User>> observer = new Observer<List<User>>() {
-//            @Override
-//            public void onChanged(List<User> users) {
-//                adapter.setTrips(users);
-//            }
-//        };
-//
-//        userViewModel.getAllUsers().observe(getViewLifecycleOwner(), observer);
+
         return v;
     }
 
@@ -53,13 +49,15 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
     }
 }

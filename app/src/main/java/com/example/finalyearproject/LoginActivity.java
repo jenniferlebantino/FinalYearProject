@@ -27,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
 
     private FirebaseAuth authenticate;
+    private String email;
+    private String password;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,21 +37,20 @@ public class LoginActivity extends AppCompatActivity {
 
         initialise();
 
-        registerBtn.setOnClickListener(new View.OnClickListener()
-        {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 launchRegistration();
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener()
-        {
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                loginVerification();
+            public void onClick(View v) {
+                if (isLoginDetailsValid()) {
+                    loginVerification();
+                }
             }
         });
     }
@@ -58,23 +59,37 @@ public class LoginActivity extends AppCompatActivity {
         authenticate = FirebaseAuth.getInstance();
         emailAddressText = findViewById(R.id.login_emailAddress);
         passwordText = findViewById(R.id.login_password);
-        loginBtn = (Button)findViewById(R.id.login_loginBtn);
-        registerBtn = (Button)findViewById(R.id.login_registerBtn);
+        loginBtn = (Button) findViewById(R.id.login_loginBtn);
+        registerBtn = (Button) findViewById(R.id.login_registerBtn);
+    }
+
+    private boolean isLoginDetailsValid() {
+        email = emailAddressText.getText().toString();
+        password = passwordText.getText().toString();
+
+        boolean valid = true;
+
+        if (email.isEmpty()) {
+            emailAddressText.setError("Please enter a valid email address.");
+            valid = false;
+        } else if (password.isEmpty()) {
+            passwordText.setError("Please enter a valid password.");
+            valid = false;
+        }
+        return valid;
     }
 
     private void loginVerification() {
-        String email = emailAddressText.getText().toString();
-        String password = passwordText.getText().toString();
 
-        if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            if(!password.isEmpty()) {
+        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (!password.isEmpty()) {
                 authenticate.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
                                 finish();
                             }
                         })
@@ -85,23 +100,17 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
             }
-            else if (email.isEmpty()) {
-                emailAddressText.setError("Please enter a valid email address.");
-            }
-            else if (password.isEmpty()) {
-                passwordText.setError("Please enter a valid password.");
-            }
         }
 
     }
 
     private void launchRegistration() {
-        Intent launchRegistrationActivity= new Intent(LoginActivity.this, RegistrationActivity.class);
+        Intent launchRegistrationActivity = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(launchRegistrationActivity);
     }
 
     private void launchMain() {
-        Intent launchMainActivity= new Intent(LoginActivity.this, MainActivity.class);
+        Intent launchMainActivity = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(launchMainActivity);
     }
 

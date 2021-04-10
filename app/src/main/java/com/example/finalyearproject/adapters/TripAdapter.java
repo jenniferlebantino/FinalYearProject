@@ -46,6 +46,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripHolder> {
         //Java obj into view for holder
         Trip currentTrip = trips.get(position);
         holder.title.setText(currentTrip.getTitle());
+        String x = currentTrip.getDescription();
         holder.description.setText(currentTrip.getDescription());
         String imageUrl = trips.get(position).getImageUrl();
         if (imageUrl.equals("")) {
