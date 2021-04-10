@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/single_spacing"
+    android:layout_marginStart="@dimen/single_spacing"
+    android:layout_marginTop="@dimen/single_spacing" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/double_spacing">
+
+        <TextView
+            android:id="@+id/country_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:text="Country"/>
+
+        <TextView
+            android:id="@+id/country_ambulance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ambulance"/>
+
+        <TextView
+            android:id="@+id/country_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fire"/>
+
+        <TextView
+            android:id="@+id/country_police"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Police"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -36,6 +36,7 @@ public class MailAsyncTask extends AsyncTask<Void, Void, Void> {
         tripInformation.append(trip.getDescription()).append(" \n");
         tripInformation.append(trip.getStartDate()).append(" \n");
         tripInformation.append(trip.getEndDate()).append(" \n");
+        tripInformation.append(trip.getItinerary()).append(" \n");
     }
 
     @Override

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String EXTRA_USERID = "com.example.finalyearproject.EXTRA_USERID";
 
     private DrawerLayout drawer;
 
