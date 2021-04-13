@@ -119,7 +119,7 @@ public class MailAsyncTask extends AsyncTask<Void, Void, Void> {
 
         subject = "Safety Alert for " + userName;
         body = "Hello. \n\nThis email has been sent to you because " + userName + " has triggered their safety alert because they feel that their safety has been compromised." +
-                "At the time that this email is being sent, this is their last registered location: " +
+                "\nAt the time that this email is being sent, this is their last registered location: " + safetyInformation +
                 "\n\nWe recommend that you get into contact with this person as soon as you can. \n\nThank you.";
     }
 }
