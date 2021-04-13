@@ -2,5 +2,7 @@ package com.example.finalyearproject;
 
 enum EmailTypeEnum {
     ContactVerification,
-    TripInformation
+    TripInformation,
+    WelcomeEmail,
+    SafetyAlert
 }

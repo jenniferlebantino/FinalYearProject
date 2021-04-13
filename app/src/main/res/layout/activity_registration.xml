@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:background="#FEE1C7"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="@dimen/double_spacing"
     tools:context=".RegistrationActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="8dp">
+        app:cardCornerRadius="@dimen/single_spacing"
+        app:cardElevation="@dimen/single_spacing">
 
         <LinearLayout
             android:layout_width="match_parent"

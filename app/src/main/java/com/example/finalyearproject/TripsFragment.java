@@ -1,7 +1,6 @@
 package com.example.finalyearproject;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,7 +146,7 @@ public class TripsFragment extends Fragment {
                 intent.putExtra(AddEditTripActivity.EXTRA_ENDDATE, trip.getEndDate());
                 intent.putExtra(AddEditTripActivity.EXTRA_IMAGEURL, trip.getImageUrl());
                 intent.putExtra(AddEditTripActivity.EXTRA_ITINERARY, trip.getItinerary());
-                intent.putExtra(AddEditTripActivity.EXTRA_SELECTEDCONTACTS, "");
+                intent.putExtra(AddEditTripActivity.EXTRA_ADDEDITTRIP_SELECTEDCONTACTS, "");
                 startActivityForResult(intent, EDIT_TRIP_REQUEST);
             }
         }).attachToRecyclerView(recyclerView);
@@ -197,8 +196,9 @@ public class TripsFragment extends Fragment {
                     TripContacts tripContact = new TripContacts(trip.getTripId(), Integer.parseInt(contactId));
                     tripContactsViewModel.insert(tripContact);
                     Contact contact = contactAdapter.getContactById(Integer.parseInt(contactId));
-
-                    MailAsyncTask mailTask = new MailAsyncTask(getContext(), EmailTypeEnum.TripInformation, contact.getEmailAddress(), contact.getFirstName());
+                    List<String> recipients = new ArrayList<>();
+                    recipients.add(contact.getEmailAddress());
+                    MailAsyncTask mailTask = new MailAsyncTask(getContext(), EmailTypeEnum.TripInformation, recipients, contact.getFirstName());
                     mailTask.setTripInformation(trip);
                     mailTask.execute();
                 }
@@ -224,7 +224,7 @@ public class TripsFragment extends Fragment {
             trip.setUserId(authenticate.getCurrentUser().getUid());
             tripViewModel.update(trip);
 
-            selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
+            selectedContactsString = data.getStringExtra(AddEditTripActivity.EXTRA_ADDEDITTRIP_SELECTEDCONTACTS);
             if(!selectedContactsString.equals("")) {
                 selectedContacts = Arrays.asList(selectedContactsString.split(","));
                 for(String contactId : selectedContacts)

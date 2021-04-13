@@ -13,6 +13,16 @@
         android:id="@+id/selectContacts_recycler_view"
         tools:listitem="@layout/contact_item"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectContacts_noContacts"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="No more contacts to show."/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -35,7 +35,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
     }
 
     public ContactAdapter() {
-
     }
 
     @NonNull
@@ -82,12 +81,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
                         selectedContacts.add(contact.getContactId());
                     }
                     else {
-                        selectedContacts.remove(contact.getContactId());
+                        selectedContacts.remove(contact.getContactId()-1);
                     }
                 }
             });
         }
-
     }
 
     @Override
@@ -111,6 +109,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
             }
         }
         return null;
+    }
+
+    public List<String> getContactEmails() {
+        List<String> emails = new ArrayList<>();
+        for (Contact contact : contacts) {
+            emails.add(contact.getEmailAddress());
+        }
+        return emails;
     }
 
     class ContactHolder extends RecyclerView.ViewHolder {
@@ -138,7 +144,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
                     }
                 });
             }
-
         }
     }
 

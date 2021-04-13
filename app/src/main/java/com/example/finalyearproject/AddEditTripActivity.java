@@ -16,7 +16,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     public static final String EXTRA_ENDDATE = "com.example.finalyearproject.EXTRA_ENDDATE";
     public static final String EXTRA_IMAGEURL = "com.example.finalyearproject.EXTRA_IMAGEURL";
     public static final String EXTRA_ITINERARY = "com.example.finalyearproject.EXTRA_ITINERARY";
-    public static final String EXTRA_SELECTEDCONTACTS = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS";
+    public static final String EXTRA_ADDEDITTRIP_SELECTEDCONTACTS = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS";
     public static final int PICK_IMAGE_REQUEST = 1;
     public static final int SELECT_CONTACTS_REQUEST = 2;
 
@@ -108,6 +107,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
             public void onClick(View v) {
                 Intent intent = new Intent(AddEditTripActivity.this, SelectContactsActivity.class);
                 intent.putExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS, "");
+                intent.putExtra(SelectContactsActivity.EXTRA_SELECTCONTACTS_NAMES, "");
                 startActivityForResult(intent, SELECT_CONTACTS_REQUEST);
             }
         });
@@ -190,12 +190,21 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
             }
             else if (requestCode == SELECT_CONTACTS_REQUEST && resultCode == RESULT_OK) {
                 selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
-                example.setText(selectedContactsString);
+                String contactNames = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTCONTACTS_NAMES);
+
                 String[] tokens = selectedContactsString.split(",");
 
                 for(int i = 0; i<tokens.length; i++) {
                     selectedContacts.add(Integer.parseInt(tokens[i]));
                 }
+
+                if(!contactNames.isEmpty()) {
+                    example.setText(contactNames);
+                }
+                else {
+                    example.setText("No users selected.");
+                }
+
             }
         }
     }
@@ -272,7 +281,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         tripData.putExtra(EXTRA_ENDDATE, endDate);
         tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
         tripData.putExtra(EXTRA_ITINERARY, itinerary);
-        tripData.putExtra(EXTRA_SELECTEDCONTACTS, selectedContactsString);
+        tripData.putExtra(EXTRA_ADDEDITTRIP_SELECTEDCONTACTS, selectedContactsString);
 
         int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
         if (id != -1) {

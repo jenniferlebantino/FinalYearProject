@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent">
+    android:background="@color/colorAccent"
+    android:orientation="vertical"
+    android:padding="@dimen/single_spacing">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/home_homeContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/single_spacing"
+        android:layout_marginBottom="@dimen/single_spacing">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/single_spacing">
+
+            <TextView
+                android:id="@+id/home_emergencyContact"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="70dp"
+                android:text="Hello!" />
+
+            <fragment
+                android:id="@+id/home_mapFragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_below="@+id/home_emergencyServiceText" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/home_homeContent"
+        android:id="@+id/home_sosBtn"
+        android:text="Test" />
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/home_sosBtn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/home_homeContent"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_sos"
+        app:fabCustomSize="100dp"
+        app:maxImageSize="55dp" />-->
 
 </RelativeLayout>

@@ -21,12 +21,16 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddEditContactActivity extends AppCompatActivity {
     public static final String EXTRA_CONTACTID = "com.example.finalyearproject.EXTRA_CONTACTID";
@@ -43,7 +47,7 @@ public class AddEditContactActivity extends AppCompatActivity {
     private EditText phoneNumberTxtBox;
     private ImageView contactImageView;
     private Button chooseImageBtn;
-    private Button saveBtn;
+    private FloatingActionButton saveBtn;
 
     private Uri imageUri;
     private StorageReference storageReference;
@@ -85,7 +89,7 @@ public class AddEditContactActivity extends AppCompatActivity {
             }
         });
 
-        saveBtn = (Button) findViewById(R.id.addTrip_saveBtn);
+        saveBtn = findViewById(R.id.addTrip_saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +134,7 @@ public class AddEditContactActivity extends AppCompatActivity {
     private void SaveContact() {
         String firstName = firstNameTxtBox.getText().toString();
         String lastName = lastNameTxtBox.getText().toString();
-        String emailAddress = lastNameTxtBox.getText().toString();
+        String emailAddress = emailAddressTxtBox.getText().toString();
         String phoneNumber = phoneNumberTxtBox.getText().toString() == null ? "" : phoneNumberTxtBox.getText().toString();
         String imageUrl = imageUri == null ? "" : imageUri.toString();
 
@@ -180,7 +184,9 @@ public class AddEditContactActivity extends AppCompatActivity {
         if (id != -1) {
             contactData.putExtra(EXTRA_CONTACTID, id);
         }
-        new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, emailAddress, firstName).execute();
+        List<String> recipients = new ArrayList<>();
+        recipients.add(emailAddress);
+        new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, recipients, firstName).execute();
 
         setResult(RESULT_OK, contactData);
         finish();

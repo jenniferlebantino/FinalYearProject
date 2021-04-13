@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,25 +63,29 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void createUser() {
-        if (Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()) {
-            authenticate.createUserWithEmailAndPassword(emailAddress, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+        authenticate.createUserWithEmailAndPassword(emailAddress, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(!task.isSuccessful()) {
+                            try {
+                                throw task.getException();
+                            } catch (Exception e) {
+                                Log.d("onComplete: ", e.getMessage());
+                                registrationErrorTxtView.setVisibility(VISIBLE);
+                            }
+                        }
+                        else {
                             Toast.makeText(RegistrationActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            List<String> recipients = new ArrayList<>();
+                            recipients.add(emailAddress);
+                            new MailAsyncTask(RegistrationActivity.this, EmailTypeEnum.WelcomeEmail, recipients, "");
                             startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                             finish();
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrationActivity.this, "Registration Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            registrationErrorTxtView.setVisibility(VISIBLE);
-        }
+                    }
+                });
     }
 
     private void initialise() {
@@ -102,35 +111,49 @@ public class RegistrationActivity extends AppCompatActivity {
         boolean valid = true;
 
         if (firstName.isEmpty()) {
+            //First name cannot be empty.
             firstNameText.setError("First name required.");
             valid = false;
         } else if (emailAddress.isEmpty()) {
+            //Email cannot be empty.
             emailAddressText.setError("Email address required.");
             valid = false;
         } else if (confirmEmailAddress.isEmpty()) {
+            //Confirm email cannot be empty.
             confirmEmailAddressText.setError("Email address required.");
             valid = false;
         } else if (!emailAddress.equals(confirmEmailAddress)) {
+            //Email addresses must match.
             confirmEmailAddressText.setError("Email addresses do not match.");
             valid = false;
-        } else if (!password.isEmpty() && password.length() >= 8 && isValidPassword(password)) {
+        } else if (!password.isEmpty() && password.length() >= 8 && !isValidPassword(password)) {
+            //Password must match criteria.
             passwordText.setError("Password must contain 8 characters, 1 capital letter, and 1 special character.");
             valid = false;
         } else if (password.isEmpty()) {
+            //Password cannot be empty.
             passwordText.setError("Please enter a password.");
             valid = false;
         } else if (confirmPassword.isEmpty()) {
+            //Confirm password cannot be empty.
             confirmPasswordText.setError("Please enter a password.");
             valid = false;
         } else if (!password.equals(confirmPassword)) {
+            //Passwords must match.
             confirmPasswordText.setError("Passwords do not match.");
             valid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()) {
+            //Email must be a valid structure.
+            emailAddressText.setError("Your email must contain a valid domain.");
+            valid = false;
         }
+
         return valid;
     }
 
     public boolean isValidPassword(final String password) {
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+*=])(?=\\S+$).{4,}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
 
