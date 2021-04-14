@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/contacts_recycler_view"
+        android:id="@+id/emergencyContacts_recyclerView"
         tools:listitem="@layout/country_item"/>
 
 </RelativeLayout>

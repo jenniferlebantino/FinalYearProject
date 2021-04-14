@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     private FloatingActionButton sosBtn;
     private TextView emergencyServiceText;
-    private String locationCoordinates = "Failed";
+    private String locationCoordinates = "Location Unavailable";
 
     private GoogleMap map;
     private boolean isLocationPermissionGranted;
@@ -71,7 +71,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         initMap();
         locationProviderClient = new FusedLocationProviderClient(getActivity());
         getCurrentLocation();
-        String x = locationCoordinates;
 
         final ContactAdapter adapter = new ContactAdapter();
         ContactViewModel contactVM = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);

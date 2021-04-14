@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/single_spacing"
     android:layout_marginStart="@dimen/single_spacing"
     android:layout_marginTop="@dimen/single_spacing" >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -14,28 +16,75 @@
 
         <TextView
             android:id="@+id/country_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Large"
-            android:text="Country"/>
-
-        <TextView
-            android:id="@+id/country_ambulance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ambulance"/>
-
-        <TextView
-            android:id="@+id/country_fire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fire"/>
+            android:text="Country"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/country_police"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Police"/>
-    </LinearLayout>
+            android:text="Police: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/country_name" />
+
+        <TextView
+            android:id="@+id/police"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/country_police"
+            app:layout_constraintTop_toBottomOf="@+id/country_name" />
+
+        <TextView
+            android:id="@+id/country_ambulance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ambulance: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/country_police" />
+
+        <TextView
+            android:id="@+id/ambulance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/country_ambulance"
+            app:layout_constraintTop_toBottomOf="@+id/country_police" />
+
+        <TextView
+            android:id="@+id/country_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fire: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/country_ambulance" />
+
+        <TextView
+            android:id="@+id/fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/country_fire"
+            app:layout_constraintTop_toBottomOf="@+id/country_ambulance" />
+
+        <TextView
+            android:id="@+id/country_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:text="Notes: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/country_fire" />
+
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            app:layout_constraintStart_toEndOf="@+id/country_notes"
+            app:layout_constraintTop_toBottomOf="@+id/country_fire" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
