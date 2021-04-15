@@ -38,7 +38,7 @@ public class SelectContactsActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter(false, true);
+        final ContactAdapter adapter = new ContactAdapter(true);
         rv.setAdapter(adapter);
         contactVM = new ViewModelProvider(SelectContactsActivity.this).get(ContactViewModel.class);
         final Observer<List<Contact>> observer = new Observer<List<Contact>>() {

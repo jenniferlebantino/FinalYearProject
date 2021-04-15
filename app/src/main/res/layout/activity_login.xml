@@ -1,94 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FEE1C7"
-    android:padding="@dimen/double_spacing"
     android:orientation="vertical"
+    android:padding="@dimen/double_spacing"
     tools:context=".LoginActivity">
 
-        <ImageView
-            android:id="@+id/login_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/quad_spacing"
-            app:srcCompat="@drawable/im_logo" />
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/quad_spacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/im_logo" />
 
-        <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/single_spacing"
+        app:cardElevation="@dimen/single_spacing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_logo">
+
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="8dp">
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:padding="@dimen/double_spacing"
+            android:rowCount="6">
 
-            <GridLayout
+            <TextView
+                android:id="@+id/login_loginTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="2"
-                android:padding="24dp"
-                android:rowCount="6">
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:gravity="center_horizontal"
+                android:text="@string/login"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/login_loginTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_columnSpan="2"
-                    android:gravity="center_horizontal"
-                    android:text="@string/login"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24sp" />
+            <EditText
+                android:id="@+id/login_emailAddress"
+                android:layout_width="match_parent"
+                android:layout_columnSpan="2"
+                android:layout_marginTop="16dp"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress" />
 
-                <EditText
-                    android:id="@+id/login_emailAddress"
-                    android:layout_width="match_parent"
-                    android:layout_columnSpan="2"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_columnSpan="2"
+                android:layout_marginTop="@dimen/single_spacing"
+                android:layout_marginBottom="@dimen/single_spacing"
+                android:hint="@string/prompt_password"
+                android:inputType="textPassword" />
 
-                <EditText
-                    android:id="@+id/login_password"
-                    android:layout_width="match_parent"
-                    android:layout_columnSpan="2"
-                    android:layout_marginTop="@dimen/single_spacing"
-                    android:layout_marginBottom="@dimen/single_spacing"
-                    android:hint="@string/prompt_password"
-                    android:inputType="textPassword" />
+            <Button
+                android:id="@+id/login_loginBtn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/double_spacing"
+                android:background="@drawable/medium_button"
+                android:enabled="true"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
 
-                <Button
-                    android:id="@+id/login_loginBtn"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnSpan="2"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/double_spacing"
-                    android:background="@drawable/medium_button"
-                    android:enabled="true"
-                    android:text="@string/login"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white" />
+        </GridLayout>
 
-            </GridLayout>
+    </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/login_registerBtn"
+        android:layout_width="232dp"
+        android:layout_height="64dp"
+        android:background="@drawable/large_button"
+        android:clickable="true"
+        android:enabled="true"
+        android:focusable="true"
+        android:text="@string/register"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-        <Button
-            android:id="@+id/login_registerBtn"
-            android:layout_width="232dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="150dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/large_button"
-            android:clickable="true"
-            android:enabled="true"
-            android:focusable="true"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

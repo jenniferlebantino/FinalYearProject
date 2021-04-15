@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,22 +13,25 @@
         android:id="@+id/addContact_contactImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:src="@drawable/im_no_image" />
+        android:src="@drawable/im_no_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addContact_chooseImageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addContact_contactImage"
-        android:layout_marginBottom="@dimen/double_spacing"
-        android:text="Choose Image" />
+        android:text="Choose Image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContact_contactImage" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/addContact_contactDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addContact_chooseImageBtn">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContact_chooseImageBtn">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,44 +43,46 @@
                 android:id="@+id/addContact_firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/single_spacing"
                 android:hint="First Name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:paddingBottom="@dimen/single_spacing" />
 
             <EditText
                 android:id="@+id/addContact_lastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/single_spacing"
                 android:hint="Last Name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:paddingBottom="@dimen/single_spacing" />
 
             <EditText
                 android:id="@+id/addContact_emailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/single_spacing"
                 android:hint="Email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:paddingBottom="@dimen/single_spacing" />
 
             <EditText
                 android:id="@+id/addContact_phoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/single_spacing"
                 android:hint="Phone Number"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:paddingBottom="@dimen/single_spacing" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTrip_saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/addContact_contactDetails"
+        android:layout_alignRight="@id/addContact_contactDetails"
+        android:layout_margin="@dimen/single_spacing"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_save"
-        android:layout_margin="@dimen/single_spacing"
-        android:id="@+id/addTrip_saveBtn"
-        android:layout_below="@id/addContact_contactDetails"
-        android:layout_alignRight="@id/addContact_contactDetails"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

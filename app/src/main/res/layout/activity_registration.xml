@@ -15,7 +15,7 @@
         app:cardCornerRadius="@dimen/single_spacing"
         app:cardElevation="@dimen/single_spacing">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -28,78 +28,102 @@
                 android:gravity="center_horizontal"
                 android:text="Registration"
                 android:textAlignment="center"
-                android:layout_marginBottom="@dimen/quad_spacing"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:layout_marginBottom="@dimen/quad_spacing"
+                app:layout_constraintEnd_toEndOf="@+id/registration_firstNameInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/registration_firstNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
-                android:hint="First Name" />
+                android:hint="First Name"
+                android:layout_marginTop="@dimen/quad_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_registrationTitle" />
 
             <EditText
                 android:id="@+id/registration_lastNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
-                android:hint="Last Name" />
+                android:hint="Last Name"
+                android:layout_marginTop="@dimen/double_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_firstNameInput" />
 
             <EditText
                 android:id="@+id/registration_emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
-                android:hint="Email" />
+                android:layout_marginTop="@dimen/double_spacing"
+                android:hint="Email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_lastNameInput" />
 
             <EditText
                 android:id="@+id/registration_confirmEmailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
-                android:hint="Confirm Email" />
+                android:layout_marginTop="@dimen/double_spacing"
+                android:hint="Confirm Email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_emailInput" />
 
             <EditText
                 android:id="@+id/registration_passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
+                android:layout_marginTop="@dimen/double_spacing"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_confirmEmailInput" />
 
             <EditText
                 android:id="@+id/registration_confirmPasswordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/single_spacing"
+                android:layout_marginTop="@dimen/double_spacing"
                 android:hint="Confirm Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_passwordInput" />
 
             <Button
                 android:id="@+id/registration_submitBtn"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/double_spacing"
                 android:background="@drawable/medium_button"
                 android:clickable="true"
                 android:enabled="true"
                 android:padding="@dimen/double_spacing"
                 android:text="Submit"
+                android:layout_marginTop="@dimen/quad_spacing"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_confirmPasswordInput" />
 
             <TextView
+                android:id="@+id/registration_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User already exists."
-                android:id="@+id/registration_error"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/double_spacing"
-                android:visibility="invisible"/>
+                android:text="User already exists."
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_confirmPasswordInput" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

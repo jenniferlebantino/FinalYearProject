@@ -1,11 +1,9 @@
 package com.example.finalyearproject.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,9 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalyearproject.R;
-import com.example.finalyearproject.ViewTripFragment;
 import com.example.finalyearproject.entities.Contact;
-import com.example.finalyearproject.entities.Trip;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,13 +21,11 @@ import java.util.List;
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactHolder> {
     private List<Contact> contacts = new ArrayList<>();
     private List<Integer> selectedContacts = new ArrayList<>();
-    private boolean smallContactItem;
     private boolean checkbox;
     private OnContactClickListener listener;
 
-    public ContactAdapter(boolean pSmallContactItem, boolean pCheckbox) {
+    public ContactAdapter(boolean pCheckbox) {
         checkbox = pCheckbox;
-        smallContactItem = pSmallContactItem;
     }
 
     public ContactAdapter() {
@@ -43,15 +37,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
         View itemView;
         final Context context = parent.getContext();
 
-        if(!smallContactItem)
-        {
-            itemView = LayoutInflater.from(context)
-                    .inflate(R.layout.contact_item, parent, false);
-        }
-        else {
-            itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.contact_item_small, parent, false);
-        }
+        itemView = LayoutInflater.from(context)
+                .inflate(R.layout.contact_item, parent, false);
 
         return new ContactHolder(itemView);
     }
@@ -65,23 +52,20 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
         final Contact contact = contacts.get(position);
         holder.name.setText(contact.getFirstName() + " " + contact.getLastName());
         String imageUrl = contact.getContactImageUrl();
-        if(imageUrl.equals(""))
-        {
+        if (imageUrl.equals("")) {
             holder.contactImageView.setImageResource(R.drawable.im_no_image);
-        }
-        else {
+        } else {
             Picasso.get().load(imageUrl).fit().into(holder.contactImageView);
         }
 
-        if(checkbox) {
+        if (checkbox) {
             holder.contactCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(holder.contactCheckBox.isChecked()) {
+                    if (holder.contactCheckBox.isChecked()) {
                         selectedContacts.add(contact.getContactId());
-                    }
-                    else {
-                        selectedContacts.remove(contact.getContactId()-1);
+                    } else {
+                        selectedContacts.remove(contact.getContactId() - 1);
                     }
                 }
             });
@@ -129,17 +113,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
             name = itemView.findViewById(R.id.contacts_name);
             contactImageView = itemView.findViewById(R.id.contacts_contactImage);
 
-            if(checkbox)
-            {
+            if (checkbox) {
                 contactCheckBox = itemView.findViewById(R.id.contacts_checkBox);
                 contactCheckBox.setVisibility(CheckBox.VISIBLE);
-            }
-            else {
+            } else {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int position = getAdapterPosition();
-                        if(listener != null && position != RecyclerView.NO_POSITION)
+                        if (listener != null && position != RecyclerView.NO_POSITION)
                             listener.onContactClick(contacts.get(position));
                     }
                 });
@@ -154,5 +136,4 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
     public void setOnContactClickListener(OnContactClickListener listener) {
         this.listener = listener;
     }
-
 }

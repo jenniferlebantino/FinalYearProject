@@ -2,46 +2,50 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/single_spacing"
     android:layout_marginStart="@dimen/single_spacing"
     android:layout_marginTop="@dimen/single_spacing">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/single_spacing">
 
         <ImageView
+            android:id="@+id/contacts_contactImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:id="@+id/contacts_contactImage"
             android:src="@drawable/im_no_image"
-            android:paddingRight="@dimen/single_spacing"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/contacts_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/contacts_name"
-            android:layout_toRightOf="@id/contacts_name"
-            android:layout_toEndOf="@+id/contacts_contactImage"
-            android:text="Contact Name"
-            android:padding="@dimen/single_spacing"
+            android:layout_marginLeft="@dimen/single_spacing"
+            android:ellipsize="end"
             android:maxLines="1"
+            android:padding="@dimen/single_spacing"
+            android:text="Contact Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:ellipsize="end"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/contacts_contactImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
             android:id="@+id/contacts_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:buttonTint="@color/colorPrimaryDark"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

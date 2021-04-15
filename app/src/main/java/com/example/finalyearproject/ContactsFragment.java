@@ -56,7 +56,7 @@ public class ContactsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setHasFixedSize(true);
 
-        final ContactAdapter adapter = new ContactAdapter(false, false);
+        final ContactAdapter adapter = new ContactAdapter(false);
 /*
         adapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
             @Override

@@ -32,7 +32,7 @@
     <string name="trips_fragment_label">Trips</string>
     <string name="map_fragment_label">Map</string>
     <string name="contacts_fragment_label">Contacts</string>
-    <string name="emergency_fragment_label">Trips</string>
+    <string name="emergency_fragment_label">Emergency Services</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="other">Other</string>
     <string name="next">Next</string>
