@@ -189,7 +189,7 @@ public class TripsFragment extends Fragment {
             trip.setUserId(authenticate.getCurrentUser().getUid());
             tripViewModel.insert(trip);
 
-            selectedContactsString = data.getStringExtra(SelectContactsActivity.EXTRA_SELECTEDCONTACTS_CONTACTS);
+            selectedContactsString = data.getStringExtra(AddEditTripActivity.EXTRA_ADDEDITTRIP_SELECTEDCONTACTS);
             if(!selectedContactsString.equals("")) {
                 selectedContacts = Arrays.asList(selectedContactsString.split(","));
                 for (String contactId : selectedContacts) {

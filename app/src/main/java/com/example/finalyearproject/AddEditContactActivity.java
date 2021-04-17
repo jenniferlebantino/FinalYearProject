@@ -2,10 +2,8 @@ package com.example.finalyearproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,10 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,8 +48,8 @@ public class AddEditContactActivity extends AppCompatActivity {
     private FloatingActionButton saveBtn;
 
     private Uri imageUri;
-    private StorageReference storageReference;
-    private DatabaseReference dbReference;
+    private StorageReference reference;
+    private DatabaseReference root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +57,8 @@ public class AddEditContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
         getSupportActionBar().setIcon(R.drawable.ic_close);
 
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        dbReference = FirebaseDatabase.getInstance().getReference("uploads");
+        root = FirebaseDatabase.getInstance().getReference("Images");
+        reference = FirebaseStorage.getInstance().getReference("uploads/");
 
         firstNameTxtBox = findViewById(R.id.addContact_firstName);
         lastNameTxtBox = findViewById(R.id.addContact_lastName);
@@ -136,64 +134,82 @@ public class AddEditContactActivity extends AppCompatActivity {
         String lastName = lastNameTxtBox.getText().toString();
         String emailAddress = emailAddressTxtBox.getText().toString();
         String phoneNumber = phoneNumberTxtBox.getText().toString() == null ? "" : phoneNumberTxtBox.getText().toString();
-        String imageUrl = imageUri == null ? "" : imageUri.toString();
-
-        if (imageUri != null) {
-            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-                    + "." + getFileExtension(imageUri));
-
-            fileReference.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return storageReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @SuppressLint("LongLogTag")
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Uri downloadUri = task.getResult();
-                        Upload upload = new Upload("", downloadUri.toString());
-
-                        Log.e("AddContactActivity_Saving", "then: " + downloadUri.toString());
-                        dbReference.push().setValue(upload);
-                        Toast.makeText(AddEditContactActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(AddEditContactActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
 
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || emailAddress.trim().isEmpty() || phoneNumber.trim().isEmpty()) {
-            Toast.makeText(this, "Please add a title and description", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddEditContactActivity.this, "Please add a first name and last name", Toast.LENGTH_LONG).show();
             return;
         }
 
-        Intent contactData = new Intent();
-        contactData.putExtra(EXTRA_FIRSTNAME, firstName);
-        contactData.putExtra(EXTRA_LASTNAME, lastName);
-        contactData.putExtra(EXTRA_EMAILADDRESS, emailAddress);
-        contactData.putExtra(EXTRA_PHONENUMBER, phoneNumber);
-        contactData.putExtra(EXTRA_IMAGEURL, imageUrl);
+        if (imageUri != null) {
+            final StorageReference fileReference = reference.child(System.currentTimeMillis()
+                    + "." + getFileExtension(imageUri));
 
-        int id = getIntent().getIntExtra(EXTRA_CONTACTID, -1);
-        if (id != -1) {
-            contactData.putExtra(EXTRA_CONTACTID, id);
+            fileReference.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileReference.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Upload upload = new Upload("", uri.toString());
+                                            String modelId = root.push().getKey();
+                                            root.child(modelId).setValue(upload);
+
+                                            Intent contactData = new Intent();
+                                            contactData.putExtra(EXTRA_FIRSTNAME, firstName);
+                                            contactData.putExtra(EXTRA_LASTNAME, lastName);
+                                            contactData.putExtra(EXTRA_EMAILADDRESS, emailAddress);
+                                            contactData.putExtra(EXTRA_PHONENUMBER, phoneNumber);
+                                            contactData.putExtra(EXTRA_IMAGEURL, uri.toString());
+
+                                            int id = getIntent().getIntExtra(EXTRA_CONTACTID, -1);
+                                            if (id != -1) {
+                                                contactData.putExtra(EXTRA_CONTACTID, id);
+                                            }
+                                            List<String> recipients = new ArrayList<>();
+                                            recipients.add(emailAddress);
+                                            new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, recipients, firstName).execute();
+
+                                            setResult(RESULT_OK, contactData);
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("ImageUpload", "onFailure: getDownloadUrl()");
+                                            Toast.makeText(AddEditContactActivity.this, "Didn't work.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("ImageUpload", "onFailure: getPutFile()");
+                            Toast.makeText(AddEditContactActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
-        List<String> recipients = new ArrayList<>();
-        recipients.add(emailAddress);
-        new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, recipients, firstName).execute();
+        else {
+            Intent contactData = new Intent();
+            contactData.putExtra(EXTRA_FIRSTNAME, firstName);
+            contactData.putExtra(EXTRA_LASTNAME, lastName);
+            contactData.putExtra(EXTRA_EMAILADDRESS, emailAddress);
+            contactData.putExtra(EXTRA_PHONENUMBER, phoneNumber);
+            contactData.putExtra(EXTRA_IMAGEURL,"");
 
-        setResult(RESULT_OK, contactData);
-        finish();
-    }
+            int id = getIntent().getIntExtra(EXTRA_CONTACTID, -1);
+            if (id != -1) {
+                contactData.putExtra(EXTRA_CONTACTID, id);
+            }
+            List<String> recipients = new ArrayList<>();
+            recipients.add(emailAddress);
+            new MailAsyncTask(AddEditContactActivity.this, EmailTypeEnum.ContactVerification, recipients, firstName).execute();
 
-    private void launchContacts() {
-        Intent launchTripsFragment = new Intent(AddEditContactActivity.this, ContactsFragment.class);
-        startActivity(launchTripsFragment);
+            setResult(RESULT_OK, contactData);
+            finish();
+        }
     }
 }

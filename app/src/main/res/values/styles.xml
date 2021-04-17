@@ -27,9 +27,13 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@drawable/medium_button</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:layout_width">156dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:radius">@dimen/single_spacing</item>
+        <item name="android:padding">@dimen/single_spacing</item>
+        <item name="android:layout_marginTop">@dimen/single_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/single_spacing</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:clickable">true</item>
     </style>
 

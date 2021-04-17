@@ -1,6 +1,7 @@
 package com.example.finalyearproject.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactH
         if (imageUrl.equals("")) {
             holder.contactImageView.setImageResource(R.drawable.im_no_image);
         } else {
-            Picasso.get().load(imageUrl).fit().into(holder.contactImageView);
+            Picasso.get().load(imageUrl).fit().centerCrop().into(holder.contactImageView);
         }
 
         if (checkbox) {

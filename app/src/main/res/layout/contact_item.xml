@@ -17,7 +17,6 @@
             android:id="@+id/contacts_contactImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/im_no_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

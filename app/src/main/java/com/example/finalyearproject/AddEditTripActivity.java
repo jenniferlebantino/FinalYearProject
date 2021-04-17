@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -66,8 +68,8 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     private List<Integer> selectedContacts = new ArrayList<>();
     private String selectedContactsString = "";
 
-    private StorageReference storageReference;
-    private DatabaseReference dbReference;
+    private StorageReference reference;
+    private DatabaseReference root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +150,8 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
     }
 
     private void initialise() {
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        dbReference = FirebaseDatabase.getInstance().getReference("uploads");
+        reference = FirebaseStorage.getInstance().getReference("uploads/");
+        root = FirebaseDatabase.getInstance().getReference("uploads");
 
         tripImageView = findViewById(R.id.addTrip_tripImage);
         chooseImageBtn = findViewById(R.id.addTrip_chooseImageBtn);
@@ -222,45 +224,6 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         String startDate = startDateTxtView.getText().toString();
         String endDate = endDateTxtView.getText().toString();
         String itinerary = itineraryTxtBox.getText().toString();
-        String imageUrl = imageUri == null ? "": imageUri.toString();
-
-        if (imageUri != null)
-        {
-            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-                    + "." + getFileExtension(imageUri));
-
-            fileReference.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
-            {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
-                {
-                    if (!task.isSuccessful())
-                    {
-                        throw task.getException();
-                    }
-                    return storageReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task)
-                {
-                    if (task.isSuccessful())
-                    {
-                        Uri downloadUri = task.getResult();
-                        Upload upload = new Upload(titleTxtBox.getText().toString().trim(), downloadUri.toString());
-
-                        Log.e("AddTripActivity_Saving", "then: " + downloadUri.toString());
-                        dbReference.push().setValue(upload);
-                        Toast.makeText(AddEditTripActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(AddEditTripActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
 
         if(startDate.equals("Start Date") || endDate.equals("End Date"))
         {
@@ -268,28 +231,85 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
             return;
         }
 
-        if(title.trim().isEmpty() || description.trim().isEmpty())
+        if(title.trim().isEmpty())
         {
-            Toast.makeText(AddEditTripActivity.this, "Please add a title and description", Toast.LENGTH_SHORT).show();
+            titleTxtBox.setError("Please add a title.");
+            return;
+        }
+        else if (description.trim().isEmpty()) {
+            descriptionTxtBox.setError("Please add a description.");
             return;
         }
 
-        Intent tripData = new Intent();
-        tripData.putExtra(EXTRA_TITLE, title);
-        tripData.putExtra(EXTRA_DESCRIPTION, description);
-        tripData.putExtra(EXTRA_STARTDATE, startDate);
-        tripData.putExtra(EXTRA_ENDDATE, endDate);
-        tripData.putExtra(EXTRA_IMAGEURL, imageUrl);
-        tripData.putExtra(EXTRA_ITINERARY, itinerary);
-        tripData.putExtra(EXTRA_ADDEDITTRIP_SELECTEDCONTACTS, selectedContactsString);
+        if (imageUri != null)
+        {
+            final StorageReference fileReference = reference.child(System.currentTimeMillis()
+                    + "." + getFileExtension(imageUri));
 
-        int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
-        if (id != -1) {
-            tripData.putExtra(EXTRA_TRIPID, id);
+            fileReference.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileReference.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Upload upload = new Upload("", uri.toString());
+                                            String modelId = root.push().getKey();
+                                            root.child(modelId).setValue(upload);
+
+                                            Intent tripData = new Intent();
+                                            tripData.putExtra(EXTRA_TITLE, title);
+                                            tripData.putExtra(EXTRA_DESCRIPTION, description);
+                                            tripData.putExtra(EXTRA_STARTDATE, startDate);
+                                            tripData.putExtra(EXTRA_ENDDATE, endDate);
+                                            tripData.putExtra(EXTRA_IMAGEURL, uri.toString());
+                                            tripData.putExtra(EXTRA_ITINERARY, itinerary);
+                                            tripData.putExtra(EXTRA_ADDEDITTRIP_SELECTEDCONTACTS, selectedContactsString);
+
+                                            int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
+                                            if (id != -1) {
+                                                tripData.putExtra(EXTRA_TRIPID, id);
+                                            }
+
+                                            setResult(RESULT_OK, tripData);
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("ImageUpload", "onFailure: getDownloadUrl()");
+                                            Toast.makeText(AddEditTripActivity.this, "Could not retrieve image url.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("ImageUpload", "onFailure: getPutFile()");
+                            Toast.makeText(AddEditTripActivity.this, "Image upload failed. Could not save contact.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
+        else {
+            Intent tripData = new Intent();
+            tripData.putExtra(EXTRA_TITLE, title);
+            tripData.putExtra(EXTRA_DESCRIPTION, description);
+            tripData.putExtra(EXTRA_STARTDATE, startDate);
+            tripData.putExtra(EXTRA_ENDDATE, endDate);
+            tripData.putExtra(EXTRA_IMAGEURL, "");
+            tripData.putExtra(EXTRA_ITINERARY, itinerary);
+            tripData.putExtra(EXTRA_ADDEDITTRIP_SELECTEDCONTACTS, selectedContactsString);
 
-        setResult(RESULT_OK, tripData);
-        finish();
+            int id = getIntent().getIntExtra(EXTRA_TRIPID, -1);
+            if (id != -1) {
+                tripData.putExtra(EXTRA_TRIPID, id);
+            }
+
+            setResult(RESULT_OK, tripData);
+            finish();        }
     }
 
     @Override

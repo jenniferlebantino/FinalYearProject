@@ -85,11 +85,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         sosBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MailAsyncTask mail = new MailAsyncTask(getContext(), EmailTypeEnum.SafetyAlert, adapter.getContactEmails(), "");
-                getLocationString();
-                mail.setSafetyInformation("Jennifer", locationCoordinates);
-                mail.execute();
-                Toast.makeText(getContext(), "SOS Alert Sent", Toast.LENGTH_SHORT).show();
+                if(!adapter.getContactEmails().isEmpty()) {
+                    MailAsyncTask mail = new MailAsyncTask(getContext(), EmailTypeEnum.SafetyAlert, adapter.getContactEmails(), "");
+                    getLocationString();
+                    mail.setSafetyInformation("Jennifer", locationCoordinates);
+                    mail.execute();
+                    Toast.makeText(getContext(), "SOS Alert Sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "No contacts to alert.", Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });
@@ -165,7 +169,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         LatLng latLng = new LatLng(latitude, longitude);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18);
         map.moveCamera(cameraUpdate);
-        //map.addMarker(new MarkerOptions())
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
@@ -185,7 +188,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
                 isLocationPermissionGranted = true;
-                Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
             }
 
             @Override

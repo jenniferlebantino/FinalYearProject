@@ -22,7 +22,6 @@
                 android:id="@+id/addTrip_tripImage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginBottom="@dimen/single_spacing"
                 android:src="@drawable/im_no_image" />
 
             <Button
@@ -30,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/single_spacing"
+                style="@style/medium_button"
                 android:text="Choose Image"
                 android:textAllCaps="false" />
 
@@ -49,7 +49,7 @@
                 android:hint="Description"
                 android:inputType="text" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -61,34 +61,55 @@
                     android:id="@+id/addTrip_startDateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/single_spacing"
-                    android:text="Start Date" />
+                    android:text="Start Date"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/addTrip_startDateBtn"
+                    style="@style/medium_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/single_spacing"
                     android:text="Start Date"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="@dimen/single_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/addTrip_startDateTxt"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/double_spacing">
 
                 <TextView
                     android:id="@+id/addTrip_endDateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/single_spacing"
-                    android:text="End Date" />
+                    android:layout_marginLeft="@dimen/single_spacing"
+                    android:text="End Date"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/addTrip_endDateBtn"
+                    style="@style/medium_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/single_spacing"
                     android:text="End Date"
-                    android:textAllCaps="false" />
-            </LinearLayout>
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/addTrip_endDateTxt"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:id="@+id/addtrip_contactsDivider"
+                android:id="@+id/addTrip_contactsDivider"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginBottom="@dimen/double_spacing"
@@ -112,6 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Contact"
+                style="@style/medium_button"
                 android:textAllCaps="false" />
 
             <View
