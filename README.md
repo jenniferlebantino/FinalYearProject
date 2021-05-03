@@ -7,5 +7,5 @@ Instructions for Running the App:
 5) The app can now be run on the emulator by clicking on the play button next to the emulator name in Android Studio.
 
 From here, you can create your own test user by registering a new account, or you can use the details provided below.
-# email: example@example.com
-# password: Helloabc123!
+- email: example@example.com
+- password: Helloabc123!
