@@ -24,7 +24,6 @@ public class SelectContactsActivity extends AppCompatActivity {
     public static final String EXTRA_SELECTCONTACTS_NAMES = "com.example.finalyearproject.EXTRA_SELECTEDCONTACTS_NAMES";
 
     private FloatingActionButton saveBtn;
-    private TextView noContactsTextView;
 
     private ContactViewModel contactVM;
 

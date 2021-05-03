@@ -57,21 +57,7 @@ public class ContactsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         final ContactAdapter adapter = new ContactAdapter(false);
-/*
-        adapter.setOnContactClickListener(new ContactAdapter.OnContactClickListener() {
-            @Override
-            public void onContactClick(Contact contact) {
-                Intent intent = new Intent(getContext(), AddEditContactActivity.class);
-                intent.putExtra(AddEditContactActivity.EXTRA_CONTACTID, contact.getContactId());
-                intent.putExtra(AddEditContactActivity.EXTRA_IMAGEURL, contact.getContactImageUrl());
-                intent.putExtra(AddEditContactActivity.EXTRA_FIRSTNAME, contact.getFirstName());
-                intent.putExtra(AddEditContactActivity.EXTRA_LASTNAME, contact.getLastName());
-                intent.putExtra(AddEditContactActivity.EXTRA_EMAILADDRESS, contact.getEmailAddress());
-                intent.putExtra(AddEditContactActivity.EXTRA_PHONENUMBER, contact.getPhoneNumber());
-                startActivityForResult(intent, EDIT_CONTACT_REQUEST);
-            }
-        });
-*/
+
         recyclerView.setAdapter(adapter);
 
         contactViewModel = new ViewModelProvider(requireActivity()).get(ContactViewModel.class);

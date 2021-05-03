@@ -34,16 +34,8 @@ public class TripViewModel extends AndroidViewModel {
         tripRepository.delete(trip);
     }
 
-//    public void deleteAll(User user) {
-//        userRepository.delete(user);
-//    }
-
     public LiveData<List<Trip>> getAllTrips() {
         return allTrips;
-    }
-
-    public Trip getTripById(int tripID) {
-        return tripRepository.getTripById(tripID);
     }
 
 }

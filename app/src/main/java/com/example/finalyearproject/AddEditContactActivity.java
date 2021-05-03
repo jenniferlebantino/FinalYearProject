@@ -77,7 +77,7 @@ public class AddEditContactActivity extends AppCompatActivity {
             phoneNumberTxtBox.setText(intent.getStringExtra(EXTRA_PHONENUMBER));
             loadImage(EXTRA_IMAGEURL);
         } else {
-            setTitle("Add Contact");
+            setTitle("Add New Contact");
         }
 
         chooseImageBtn.setOnClickListener(new View.OnClickListener() {

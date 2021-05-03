@@ -52,22 +52,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
+                setTitle("Home");
                 break;
             case R.id.nav_trips:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new TripsFragment(), "TRIPS_FRAGMENT").commit();
+                setTitle("Trips");
                 break;
             case R.id.nav_map:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MapsFragment()).commit();
+                setTitle("Map");
                 break;
             case R.id.nav_contacts:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ContactsFragment()).commit();
+                setTitle("Contacts");
                 break;
             case R.id.nav_emergency:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new EmergencyServicesFragment()).commit();
+                setTitle("Emergency Services");
                 break;
             case R.id.nav_settings:
                 Intent launchSettings = new Intent(this, SettingsActivity.class);

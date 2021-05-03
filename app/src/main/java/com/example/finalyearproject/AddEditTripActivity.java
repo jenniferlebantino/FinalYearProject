@@ -77,7 +77,7 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
         setContentView(R.layout.activity_add_trip);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("New Trip");
+
         initialise();
 
         chooseImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,18 +125,16 @@ public class AddEditTripActivity extends AppCompatActivity implements DatePicker
 
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_TRIPID)) {
-            setTitle("Edit Contact");
-            String x = intent.getStringExtra(EXTRA_TITLE);
+            setTitle("Edit Trip");
             titleTxtBox.setText(intent.getStringExtra(EXTRA_TITLE));
             descriptionTxtBox.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             startDateTxtView.setText(intent.getStringExtra(EXTRA_STARTDATE));
             endDateTxtView.setText(intent.getStringExtra(EXTRA_ENDDATE));
             itineraryTxtBox.setText(intent.getStringExtra(EXTRA_ITINERARY));
-            String test = intent.getStringExtra(EXTRA_ITINERARY);
             loadImage(EXTRA_IMAGEURL);
         }
         else {
-            setTitle("Add Contact");
+            setTitle("Add New Trip");
         }
     }
 

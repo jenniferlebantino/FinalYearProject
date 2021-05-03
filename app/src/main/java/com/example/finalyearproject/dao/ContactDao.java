@@ -29,6 +29,4 @@ public interface ContactDao {
     @Query("SELECT * FROM contacts_table ORDER BY firstName")
     LiveData<List<Contact>> getAllContacts();
 
-    @RawQuery
-    Contact getContactByContactId(SupportSQLiteQuery query);
 }

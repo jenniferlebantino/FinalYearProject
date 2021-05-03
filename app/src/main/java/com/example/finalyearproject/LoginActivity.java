@@ -109,9 +109,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(launchRegistrationActivity);
     }
 
-    private void launchMain() {
-        Intent launchMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(launchMainActivity);
-    }
-
 }

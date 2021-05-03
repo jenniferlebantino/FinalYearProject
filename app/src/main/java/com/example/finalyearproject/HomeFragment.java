@@ -98,25 +98,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             }
         });
 
-        /*showLocationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getCurrentLocation();
-            }
-        });*/
-
-/*
-        sosBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MailAsyncTask mail = new MailAsyncTask(getContext(), EmailTypeEnum.SafetyAlert, adapter.getContactEmails(), "");
-                mail.setSafetyInformation("Jennifer", "");
-                mail.execute();
-                Toast.makeText(getContext(), "SOS Alert Sent", Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
-
         return v;
     }
 
@@ -126,7 +107,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.home_mapFragment);
                 if (mapFragment != null) {
                     mapFragment.getMapAsync(this);
-                    //mapFragment.onCreate(savedInstanceState);
                 }
             }
         }
@@ -211,11 +191,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMyLocationEnabled(true);
-/*
-        LatLng DefaultLocation = new LatLng(53.40873146283257, -3.004984979067241);
-        map.addMarker(new MarkerOptions().position(DefaultLocation).title("Liverpool"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(DefaultLocation));
-*/
     }
 
     @Override

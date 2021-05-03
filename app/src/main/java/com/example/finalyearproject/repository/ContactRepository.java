@@ -40,12 +40,6 @@ public class ContactRepository {
         return allContacts;
     }
 
-    public Contact getContactByContactId(int contactId) {
-        String queryString = "SELECT * FROM tripContacts_table WHERE tripId LIKE '" + Integer.toString(contactId) + "'";
-        SimpleSQLiteQuery query = new SimpleSQLiteQuery(queryString);
-        return contactDao.getContactByContactId(query);
-    }
-
     private static class InsertContactAsyncTask extends AsyncTask<Contact, Void, Void> {
 
         private ContactDao contactDao;

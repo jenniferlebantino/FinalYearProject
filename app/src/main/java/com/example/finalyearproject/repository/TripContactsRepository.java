@@ -30,17 +30,9 @@ public class TripContactsRepository {
 
     public void delete(TripContacts tripContact) { new DeleteTripContactAsyncTask(tripContactsDao).execute(tripContact);}
 
-    public LiveData<List<TripContacts>> getAllTripContactByTripId(int tripId) {
-        String queryString = "SELECT * FROM tripContacts_table WHERE tripId LIKE '" + Integer.toString(tripId) + "'";
-        SimpleSQLiteQuery query = new SimpleSQLiteQuery(queryString);
-        return tripContactsDao.getAllTripContactsByTripId(query);
-    }
-
-
     public LiveData<List<TripContacts>> getAllTripContacts() {
         return allTripContacts;
     }
-
 
     //Async Tasks
     private static class InsertTripContactAsyncTask extends AsyncTask<TripContacts, Void, Void> {

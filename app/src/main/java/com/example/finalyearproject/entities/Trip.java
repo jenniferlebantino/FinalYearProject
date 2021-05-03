@@ -17,9 +17,6 @@ public class Trip {
     private String imageUrl;
     private String itinerary;
 
-    //TODO: Create location class.
-//    private String location;
-//    public ArrayList<ItineraryItem> itinerary;
 
     public Trip(String title, String description, String startDate, String endDate, String imageUrl, String itinerary) {
         this.title = title;
@@ -28,8 +25,6 @@ public class Trip {
         this.endDate = endDate;
         this.imageUrl = imageUrl;
         this.itinerary = itinerary;
-//        this.location = location;
-//        itinerary = new ArrayList<ItineraryItem>();
     }
 
     public void setTripId(int tripId) {
